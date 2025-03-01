@@ -1,0 +1,34 @@
+C:\Users\xx933\source\repos\Hotel Room Reservation and Management System\bin\Debug\net8.0\appsettings.Development.json
+C:\Users\xx933\source\repos\Hotel Room Reservation and Management System\bin\Debug\net8.0\appsettings.json
+C:\Users\xx933\source\repos\Hotel Room Reservation and Management System\bin\Debug\net8.0\Hotel Room Reservation and Management System.staticwebassets.runtime.json
+C:\Users\xx933\source\repos\Hotel Room Reservation and Management System\bin\Debug\net8.0\Hotel Room Reservation and Management System.staticwebassets.endpoints.json
+C:\Users\xx933\source\repos\Hotel Room Reservation and Management System\bin\Debug\net8.0\Hotel Room Reservation and Management System.exe
+C:\Users\xx933\source\repos\Hotel Room Reservation and Management System\bin\Debug\net8.0\Hotel Room Reservation and Management System.deps.json
+C:\Users\xx933\source\repos\Hotel Room Reservation and Management System\bin\Debug\net8.0\Hotel Room Reservation and Management System.runtimeconfig.json
+C:\Users\xx933\source\repos\Hotel Room Reservation and Management System\bin\Debug\net8.0\Hotel Room Reservation and Management System.dll
+C:\Users\xx933\source\repos\Hotel Room Reservation and Management System\bin\Debug\net8.0\Hotel Room Reservation and Management System.pdb
+C:\Users\xx933\source\repos\Hotel Room Reservation and Management System\obj\Debug\net8.0\Hotel Room Reservation and Management System.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\xx933\source\repos\Hotel Room Reservation and Management System\obj\Debug\net8.0\Hotel Room Reservation and Management System.AssemblyInfoInputs.cache
+C:\Users\xx933\source\repos\Hotel Room Reservation and Management System\obj\Debug\net8.0\Hotel Room Reservation and Management System.AssemblyInfo.cs
+C:\Users\xx933\source\repos\Hotel Room Reservation and Management System\obj\Debug\net8.0\Hotel Room Reservation and Management System.csproj.CoreCompileInputs.cache
+C:\Users\xx933\source\repos\Hotel Room Reservation and Management System\obj\Debug\net8.0\Hotel Room Reservation and Management System.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\xx933\source\repos\Hotel Room Reservation and Management System\obj\Debug\net8.0\Hotel Room Reservation and Management System.RazorAssemblyInfo.cache
+C:\Users\xx933\source\repos\Hotel Room Reservation and Management System\obj\Debug\net8.0\Hotel Room Reservation and Management System.RazorAssemblyInfo.cs
+C:\Users\xx933\source\repos\Hotel Room Reservation and Management System\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+C:\Users\xx933\source\repos\Hotel Room Reservation and Management System\obj\Debug\net8.0\scopedcss\bundle\Hotel Room Reservation and Management System.styles.css
+C:\Users\xx933\source\repos\Hotel Room Reservation and Management System\obj\Debug\net8.0\scopedcss\projectbundle\Hotel Room Reservation and Management System.bundle.scp.css
+C:\Users\xx933\source\repos\Hotel Room Reservation and Management System\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\xx933\source\repos\Hotel Room Reservation and Management System\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\xx933\source\repos\Hotel Room Reservation and Management System\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\Users\xx933\source\repos\Hotel Room Reservation and Management System\obj\Debug\net8.0\staticwebassets\msbuild.Hotel Room Reservation and Management System.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\xx933\source\repos\Hotel Room Reservation and Management System\obj\Debug\net8.0\staticwebassets\msbuild.Hotel Room Reservation and Management System.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Users\xx933\source\repos\Hotel Room Reservation and Management System\obj\Debug\net8.0\staticwebassets\msbuild.build.Hotel Room Reservation and Management System.props
+C:\Users\xx933\source\repos\Hotel Room Reservation and Management System\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.Hotel Room Reservation and Management System.props
+C:\Users\xx933\source\repos\Hotel Room Reservation and Management System\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.Hotel Room Reservation and Management System.props
+C:\Users\xx933\source\repos\Hotel Room Reservation and Management System\obj\Debug\net8.0\staticwebassets.pack.json
+C:\Users\xx933\source\repos\Hotel Room Reservation and Management System\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\Users\xx933\source\repos\Hotel Room Reservation and Management System\obj\Debug\net8.0\Hotel Room Reservation and Management System.dll
+C:\Users\xx933\source\repos\Hotel Room Reservation and Management System\obj\Debug\net8.0\refint\Hotel Room Reservation and Management System.dll
+C:\Users\xx933\source\repos\Hotel Room Reservation and Management System\obj\Debug\net8.0\Hotel Room Reservation and Management System.pdb
+C:\Users\xx933\source\repos\Hotel Room Reservation and Management System\obj\Debug\net8.0\Hotel Room Reservation and Management System.genruntimeconfig.cache
+C:\Users\xx933\source\repos\Hotel Room Reservation and Management System\obj\Debug\net8.0\ref\Hotel Room Reservation and Management System.dll
