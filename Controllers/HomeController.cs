@@ -15,6 +15,10 @@ namespace NustarResort.Controllers
         {
             return View();
         }
+        public IActionResult login()
+        {
+            return View();
+        }
     }
 }
 

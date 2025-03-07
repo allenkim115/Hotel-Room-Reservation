@@ -1,0 +1,147 @@
+﻿<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+
+    body {
+        background: url('/images/login1.png') no-repeat center center/cover;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+
+    .container {
+        background-image:login1.png;
+        display: flex;
+        width: 80%;
+        max-width: 1000px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .parent {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(1, 1fr);
+        gap: 8px;
+    }
+
+    .div2 {
+        margin-left: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient( 181deg, rgba(230, 46, 46, 1) 12%, rgba(255, 255, 255, 1) 84% );
+        background-blend-mode: normal;
+        color: rgba(255, 255, 255, 0.5);
+        border-radius: 10px;
+        padding: 30px;
+        width: 1000px;
+        height:500px;
+        max-width: 450px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .login-box {
+        text-align: center;
+        width: 100%;
+    }
+
+        .login-box .logo {
+            width: 120px; /* Set a fixed size for the logo */
+            margin-bottom: 20px;
+        }
+
+        .login-box h2 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #900; /* Red theme */
+        }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    input {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        background-color: #900;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 15px;
+        transition: background-color 0.3s ease;
+    }
+
+        button:hover {
+            background-color: #b33333; /* Darker shade of red */
+        }
+
+    .forgot {
+        color: #900;
+        text-decoration: none;
+        font-size: 14px;
+        margin-top: 10px;
+    }
+
+        .forgot:hover {
+            text-decoration: underline;
+        }
+
+    .signup {
+        margin-top: 20px;
+        font-size: 14px;
+    }
+
+        .signup a {
+            color: #900;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+            .signup a:hover {
+                text-decoration: underline;
+            }
+
+</style>
+
+<div class="parent">
+    <div class="div1">
+        <h1>NUSTAR HOTEL</h1>
+        <p>Escape to comfort and style at Nustar, where modern amenities meet exceptional service. Whether you're here for business or leisure, enjoy spacious rooms, exquisite dining, and a relaxing atmosphere that makes you feel at home. Book your stay today and experience a memorable getaway!</p>
+    </div>
+    <div class="div2">
+        <div class="login-box">
+            <img src="~/images/logo.png" alt="Nustar Resort & Casino" class="logo">
+            <h2>LOG IN</h2>
+            <form>
+                <input type="text" placeholder="USERNAME" required>
+                <input type="password" placeholder="PASSWORD" required>
+                <a href="#" class="forgot">Forgot Password?</a>
+                <button type="submit">LOG IN</button>
+            </form>
+            <p class="signup">Don’t have an account? <a href="#">Create Now!</a></p>
+        </div>
+    </div>
+</div>
