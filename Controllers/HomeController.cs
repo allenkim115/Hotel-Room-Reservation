@@ -11,6 +11,10 @@ namespace NustarResort.Controllers
         {
             return View();
         }
+        public IActionResult BookNow()
+        {
+            return View();
+        }
     }
 }
 

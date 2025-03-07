@@ -1,0 +1,35 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container my-5 p-4 shadow-sm rounded bg-light">
+    <h1 class="text-center mb-4">Book Now</h1>
+    <p class="text-center mb-4 text-muted">Please fill out the form below to book your stay with us.</p>
+    <form>
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" placeholder="Enter your name">
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" placeholder="Enter your email">
+        </div>
+        <div class="mb-3">
+            <label for="checkin" class="form-label">Check-in Date</label>
+            <input type="date" class="form-control" id="checkin">
+        </div>
+        <div class="mb-3">
+            <label for="checkout" class="form-label">Check-out Date</label>
+            <input type="date" class="form-control" id="checkout">
+        </div>
+        <div class="mb-3">
+            <label for="roomType" class="form-label">Room Type</label>
+            <select class="form-select" id="roomType">
+                <option>Standard</option>
+                <option>Deluxe</option>
+                <option>Suite</option>
+            </select>
+        </div>
+        <button type="submit" class="btn w-100" style="background-color: #800000; border-color: #800000; color:#ffff;">Submit</button>
+    </form>
+</div>
