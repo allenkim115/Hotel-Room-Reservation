@@ -23,6 +23,10 @@ namespace NustarResort.Controllers
         {
             return View();
         }
+        public IActionResult profile()
+        {
+            return View();
+        }
     }
 }
 
