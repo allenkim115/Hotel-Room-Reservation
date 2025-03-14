@@ -11,6 +11,9 @@
     <style>
         body{
             font-family: "Quicksand", sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
         }
         .border-layer {
             position: absolute;
@@ -89,14 +92,17 @@
     </style>
 </head>
 
-<div class="hero-section text-center text-white d-flex justify-content-center align-items-center p-5" style="background: url('/images/landing.png') center/cover; height: 85vh; width:100%; padding: 2rem;">
+<div class="hero-section text-center text-white d-flex justify-content-center align-items-center"
+     style="background: url('/images/landing.png') center/cover no-repeat; height: 100vh; width: 100%; object-fit: cover;">
     <div class="d-flex flex-column align-items-center p-4">
-        <img src="~/images/logo1.png"/>
-        <img src="~/images/line.png" alt="Alternate Text"/>
+        <img src="~/images/logo1.png" />
+        <img src="~/images/line.png" alt="Alternate Text" />
         <h3 style="padding:0.5rem;">"Where comfort meets style, and every stay feels like home."</h3>
         <a href="Home/BookNow" class="btn p-3 mt-5" style="border: 2px solid white; border-radius: 20px; background-color:white; color:maroon; font-weight:bold;">Book Now</a>
-    </div> 
+    </div>
 </div>
+
+
 
 <section class="container my-5 p-4" style="height: 50vh;">
     <div class="row align-items-center">
