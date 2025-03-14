@@ -1,4 +1,5 @@
-﻿@{
+﻿@model WebApplication1.Models.LoginViewModel
+@{
     Layout = null;
 }
 <!DOCTYPE html>
@@ -37,26 +38,29 @@
         .logo {
             margin-bottom: 20px;
         }
-        .form-control{
+
+        .form-control {
             border: 2px solid #a23b3b;
             padding: 15px;
         }
-        .btn-login{
+
+        .btn-login {
             background-color: #A92020;
-            color:white;
+            color: white;
             border: none;
-            width:100%;
+            width: 100%;
         }
-        .btn-login:hover{
-            background-color: #7d1818;
-            color:white;
-        }
+
+            .btn-login:hover {
+                background-color: #7d1818;
+                color: white;
+            }
+
         a {
             color: #661b1b;
             text-decoration: none;
             font-weight: bold;
         }
-
     </style>
 </head>
 <body>
@@ -65,18 +69,19 @@
             <div class="logo">
                 <img src="~/images/logo.png" alt="Nustar Resort & Casino" class="img-fluid">
             </div>
-            <form>
+            @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+            {
                 <h1 class="mb-4">LOG IN</h1>
                 <div class="mb-3">
-                    <input type="text" class="form-control" placeholder="USERNAME">
+                    @Html.TextBoxFor(model => model.Username, new { @class = "form-control", placeholder = "USERNAME", required = "required" })
                 </div>
                 <div class="mb-3">
-                    <input type="password" class="form-control" placeholder="PASSWORD">
+                    @Html.PasswordFor(model => model.Password, new { @class = "form-control", placeholder = "PASSWORD", required = "required" })
                 </div>
                 <a href="#" class="mb-3 d-block" style="text-align: right;">Forgot Password?</a>
                 <button type="submit" class="btn btn-login">LOG IN</button>
                 <p class="mt-3">Don’t have an Account? <a href="/Home/registration">Create Now!</a></p>
-            </form>
+            }
         </div>
     </div>
 
