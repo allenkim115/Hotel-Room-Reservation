@@ -2,4 +2,163 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    Layout = null;
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .header {
+            background-color: #8B1C1C;
+            color: white;
+            padding: 15px;
+            font-size: 20px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .menu-button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            right: 10px;
+            top: 50px;
+            display: none;
+            background: white;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+            .dropdown-menu a {
+                display: block;
+                padding: 10px;
+                text-decoration: none;
+                color: black;
+            }
+
+                .dropdown-menu a:hover {
+                    background-color: #f0f0f0;
+                }
+        .sidebar {
+            background-color: #F5EAEA;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .sidebar h5 {
+            font-weight: bold;
+        }
+        .sidebar a {
+            text-decoration: none;
+            color: #C21E1E;
+            font-weight: bold;
+        }
+        .chart-container {
+            width: 50%;
+            margin: auto;
+        }
+
+        .container mt-4 {
+            margin:y
+        }
+        
+        </style>
+</head>
+<body>
+
+
+    <div class="header">
+        <span>Welcome, Admin</span>
+        <button class="menu-button" id="menuButton">&#9776;</button>
+        <div class="dropdown-menu" id="dropdownMenu">
+            <a href="Index">Logout</a>
+        </div>
+    </div>
+
+    <div class="container mt-4 mx-auto">
+        <div class="row">
+            <!-- Sidebar Section -->
+            <div class="col-md-4">
+                <div class="sidebar">
+                    <h5><img src="https://img.icons8.com/ios-filled/50/000000/conference-call.png" width="30"/> 1K Guest</h5>
+                    <a href="#">Manage Guest</a>
+                </div>
+                <div class="sidebar">
+                    <h5><img src="https://img.icons8.com/ios-filled/50/000000/email.png" width="30"/> Feedbacks</h5>
+                    <a href="#">View Feedback’s</a>
+                </div>
+                <div class="sidebar">
+                    <h5><img src="https://img.icons8.com/ios-filled/50/000000/increase.png" width="30" /> Room Rates</h5>
+                    <a href="#">View Rates</a>
+                </div>
+            </div>
+
+            <!-- Room Statistics Section -->
+            <div class="col-md-8">
+                <h4 class="text-center">Room Statistics</h4>
+                <div class="chart-container">
+                    <canvas id="roomChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+          document.getElementById('menuButton').addEventListener('click', function() {
+            var menu = document.getElementById('dropdownMenu');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        });
+
+        document.addEventListener('click', function(event) {
+            var menu = document.getElementById('dropdownMenu');
+            var button = document.getElementById('menuButton');
+            if (!menu.contains(event.target) && event.target !== button) {
+                menu.style.display = 'none';
+            }
+        });
+        var ctx = document.getElementById('roomChart').getContext('2d');
+        var roomChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Standard', 'Deluxe', 'Suite'],
+                datasets: [{
+                    data: [45, 35, 20], // Replace with dynamic data
+                    backgroundColor: ['#2E6DA4', '#C21E1E', '#212529']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
+
 }

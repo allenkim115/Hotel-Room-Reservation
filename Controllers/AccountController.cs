@@ -23,7 +23,7 @@ namespace WebApplication1.Controllers
             if (model.Username == userUsername && model.Password == userPassword)
             {
                 // Redirect to user dashboard or home page
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Indexlogin", "Home");
             }
             else if (model.Username == adminUsername && model.Password == adminPassword)
             {

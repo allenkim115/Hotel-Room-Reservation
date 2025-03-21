@@ -27,6 +27,24 @@ namespace NustarResort.Controllers
         {
             return View();
         }
+        public IActionResult AdminDash()
+        {
+            return View();
+        }
+        public IActionResult Indexlogin()
+        {
+            return View();
+        }
+        public IActionResult BookNowlogin()
+        {
+            return View();
+        }
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear(); // Clear session data
+            return RedirectToAction("Index", "Home"); // Ensure correct redirection
+        }
+
     }
 }
 
