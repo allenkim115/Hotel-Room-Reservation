@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Models;
+
 namespace WebApplication1.Controllers
 {
     public class AccountController : Controller
@@ -33,7 +34,7 @@ namespace WebApplication1.Controllers
             else
             {
                 // Add an error message if the credentials are incorrect
-                ModelState.AddModelError("", "Incorrect username or password");
+                ViewData["ErrorMessage"] = "Incorrect username or password.";
                 return View(model); // Return the same view to display the error
             }
         }
