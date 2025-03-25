@@ -71,18 +71,23 @@
     .services-checkbox-group .form-check {
         margin: 0;
     }
+
     .container-booknow {
         margin-top: 2rem !important; /* Reduced margin-top */
         margin-bottom: 2rem !important; /* Reduced margin-bottom */
+        position: relative; /* Add relative positioning */
     }
-    .div1{
-        padding:2rem;
+
+    .div1 {
+        padding: 2rem;
     }
+
     .mb-4 {
         margin-bottom: 1rem !important; /* Reduced margin */
     }
-    .mt-4{
-        margin-top:1.5rem !important;
+
+    .mt-4 {
+        margin-top: 1.5rem !important;
     }
 
     .header {
@@ -124,6 +129,19 @@
             .dropdown-menu a:hover {
                 background-color: #f0f0f0;
             }
+    .back-button {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        font-size: 24px;
+        color: maroon;
+        cursor: pointer;
+        text-decoration: none;
+        z-index: 10; /* Ensure the back button is above other elements */
+    }
+    h1{
+        padding-left:40px;
+    }
 </style>
 
 <div class="header">
@@ -136,6 +154,9 @@
 
 
 <div class="container container-booknow p-4 shadow rounded bg-light">
+    <a href="@Url.Action("Indexlogin", "Home")" class="back-button">
+        &larr;
+    </a>
     <h1 class="text-center mb-4" style="font-weight:bold;">Book Now</h1>
     <p class="text-center mb-4 text-muted">Please fill out the form below to book your stay with us.</p>
     <div class="parent">
@@ -206,7 +227,7 @@
                     </div>
                 </div>
                 <div class="mt-5">
-                     <button type="submit" class="btn w-100">Submit</button>
+                    <button type="submit" class="btn w-100">Submit</button>
                 </div>
             </form>
         </div>
@@ -219,18 +240,18 @@
 
 <script>
 
-          document.getElementById('menuButton').addEventListener('click', function() {
-            var menu = document.getElementById('dropdownMenu');
-            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-        });
+    document.getElementById('menuButton').addEventListener('click', function () {
+        var menu = document.getElementById('dropdownMenu');
+        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    });
 
-        document.addEventListener('click', function(event) {
-            var menu = document.getElementById('dropdownMenu');
-            var button = document.getElementById('menuButton');
-            if (!menu.contains(event.target) && event.target !== button) {
-                menu.style.display = 'none';
-            }
-        });
+    document.addEventListener('click', function (event) {
+        var menu = document.getElementById('dropdownMenu');
+        var button = document.getElementById('menuButton');
+        if (!menu.contains(event.target) && event.target !== button) {
+            menu.style.display = 'none';
+        }
+    });
     document.getElementById('roomType').addEventListener('change', function () {
         const selectedOption = this.options[this.selectedIndex];
         const imagePath = selectedOption.getAttribute('data-image');

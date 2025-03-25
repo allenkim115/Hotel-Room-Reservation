@@ -23,12 +23,14 @@
             padding: 30px;
             margin-top: 50px;
             max-width: 600px;
+            position: relative; /* Added for positioning the back button */
         }
 
         h2 {
             color: #343a40;
             margin-bottom: 30px;
             text-transform: uppercase;
+            padding-left: 40px; /* Add padding to the left to avoid overlap */
         }
 
         .form-group {
@@ -86,11 +88,23 @@
             object-fit: cover;
             border: 2px solid maroon;
         }
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            color: maroon;
+            cursor: pointer;
+            text-decoration: none;
+            z-index: 10; /* Ensure the back button is above other elements */
+        }
     </style>
 </head>
 <body>
-
     <div class="container mx-auto mt-5">
+        <a href="@Url.Action("Indexlogin", "Home")" class="back-button">
+            &larr;
+        </a>
         <h2 >Profile</h2>
         <div class="profile-picture-container">
             <img src="~/images/profile.png" alt="Profile Picture" class="profile-picture" id="profilePicture">
