@@ -1,12 +1,22 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Models;
+using Microsoft.AspNetCore.Authorization;
+using WebApplication1.Data;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 
 namespace NustarResort.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly ApplicationDbContext _context;
+
+        public HomeController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
         public IActionResult Index()
         {
             return View();
@@ -19,13 +29,30 @@ namespace NustarResort.Controllers
         {
             return View();
         }
-        public IActionResult registration()
+        public IActionResult register()
         {
             return View();
         }
-        public IActionResult profile()
+        [Authorize] // Add this attribute (requires using Microsoft.AspNetCore.Authorization)
+        public IActionResult Profile()
         {
-            return View();
+            // Get the currently logged-in user
+            var username = User.Identity?.Name;
+            
+            if (string.IsNullOrEmpty(username))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            
+            // You'll need to inject ApplicationDbContext to access user data
+            var user = _context.Users.FirstOrDefault(u => u.Username == username);
+            
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            
+            return View(user);
         }
         public IActionResult AdminDash()
         {
@@ -39,10 +66,12 @@ namespace NustarResort.Controllers
         {
             return View();
         }
-        public IActionResult Logout()
+
+        public async Task<IActionResult> Logout()
         {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             HttpContext.Session.Clear(); // Clear session data
-            return RedirectToAction("Index", "Home"); // Ensure correct redirection
+            return RedirectToAction("Index", "Home");
         }
 
     }

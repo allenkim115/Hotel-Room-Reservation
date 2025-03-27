@@ -1,3 +1,5 @@
+@model WebApplication1.Models.User
+
 @{
     Layout = null;
 }
@@ -23,14 +25,14 @@
             padding: 30px;
             margin-top: 50px;
             max-width: 600px;
-            position: relative; /* Added for positioning the back button */
+            position: relative;
         }
 
         h2 {
             color: #343a40;
             margin-bottom: 30px;
             text-transform: uppercase;
-            padding-left: 40px; /* Add padding to the left to avoid overlap */
+            padding-left: 40px;
         }
 
         .form-group {
@@ -40,18 +42,20 @@
         .form-control {
             border-radius: 5px;
             border: 1px solid #ced4da;
-            padding: 12px 15px; /* Increased padding for bigger input */
-            font-size: 1.1rem;  /* Increased font size for bigger text */
-            height: auto;      /*Allow the height to grow naturally with the padding and the text */
+            padding: 12px 15px;
+            font-size: 1.1rem;
+            height: auto;
         }
+
         .form-control:focus {
             box-shadow: 0 0 0 0.25rem rgba(128, 0, 0, 0.5) !important;
         }
+
         .btn-primary {
             background-color: maroon;
             border: none;
-            padding: 12px 20px; /* Increased padding for bigger button */
-            font-size: 1.1rem; /* Increased font size for bigger text */
+            padding: 12px 20px;
+            font-size: 1.1rem;
             font-weight: bold;
         }
 
@@ -62,17 +66,13 @@
         .btn-secondary {
             background-color: gray;
             border: none;
-            padding: 12px 20px; /* Increased padding for bigger button */
-            font-size: 1.1rem; /* Increased font size for bigger text */
+            padding: 12px 20px;
+            font-size: 1.1rem;
             font-weight: bold;
         }
 
         .btn-secondary:hover {
             background-color: #6c757d;
-        }
-
-        .text-danger {
-            color: red;
         }
 
         .profile-picture-container {
@@ -88,6 +88,7 @@
             object-fit: cover;
             border: 2px solid maroon;
         }
+
         .back-button {
             position: absolute;
             top: 20px;
@@ -96,16 +97,15 @@
             color: maroon;
             cursor: pointer;
             text-decoration: none;
-            z-index: 10; /* Ensure the back button is above other elements */
+            z-index: 10;
         }
     </style>
 </head>
 <body>
     <div class="container mx-auto mt-5">
-        <a href="@Url.Action("Indexlogin", "Home")" class="back-button">
-            &larr;
-        </a>
-        <h2 >Profile</h2>
+        <a href="@Url.Action("Logout", "Account")" class="btn btn-secondary position-absolute top-0 end-0 m-3">Logout</a>
+        
+        <h2>Profile</h2>
         <div class="profile-picture-container">
             <img src="~/images/profile.png" alt="Profile Picture" class="profile-picture" id="profilePicture">
         </div>
@@ -113,36 +113,32 @@
         <form>
             <div class="form-group">
                 <strong for="firstName" class="control-label">First Name</strong>
-                <input type="text" id="firstName" class="form-control" value="Damien Nerry" />
+                <input type="text" id="firstName" class="form-control" value="@Model.FirstName" readonly />
+            </div>
+
+            <div class="form-group">
+                <strong for="middleName" class="control-label">Middle Name</strong>
+                <input type="text" id="middleName" class="form-control" value="@Model.MiddleName" readonly />
             </div>
 
             <div class="form-group">
                 <strong for="lastName" class="control-label">Last Name</strong>
-                <input type="text" id="lastName" class="form-control" value="Caumeran" />
+                <input type="text" id="lastName" class="form-control" value="@Model.LastName" readonly />
             </div>
 
             <div class="form-group">
                 <strong for="userName" class="control-label">Username</strong>
-                <input type="text" id="userName" class="form-control" value="damskie" />
+                <input type="text" id="userName" class="form-control" value="@Model.Username" readonly />
             </div>
+
             <div class="form-group">
                 <strong for="email" class="control-label">Email</strong>
-                <input type="email" id="email" class="form-control" value="damskie@email.com" />
+                <input type="email" id="email" class="form-control" value="@Model.Email" readonly />
             </div>
 
             <div class="form-group">
-                <strong for="password" class="control-label">New Password</strong>
-                <input type="password" id="password" class="form-control" />
-            </div>
-
-            <div class="form-group">
-                <strong for="confirmPassword" class="control-label">Confirm Password</strong>
-                <input type="password" id="confirmPassword" class="form-control" />
-            </div>
-
-            <div class="form-group mt-3">
-                <button type="submit" class="btn btn-primary">Save Changes</button>
-                <button type="button" class="btn btn-secondary">Cancel</button>
+                <strong for="role" class="control-label">Role</strong>
+                <input type="text" id="role" class="form-control" value="@Model.Role" readonly />
             </div>
         </form>
     </div>
