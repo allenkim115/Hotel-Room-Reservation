@@ -48,7 +48,7 @@ namespace WebApplication1.Controllers
                 MiddleName = model.MiddleName,
                 LastName = model.LastName,
                 Email = model.Email,
-                Username = model.Email.Split('@')[0],
+                Username = model.Username,
                 Password = model.Password,  // 🚨 Consider hashing this
                 Role = "Guest"
             };
@@ -111,7 +111,7 @@ namespace WebApplication1.Controllers
             if (user.Role == "Guest")
                 return RedirectToAction("Indexlogin", "Home");
             else if (user.Role == "Admin")
-                return RedirectToAction("Dashboard", "Admin");
+                return RedirectToAction("AdminDash", "Home");
             else if (user.Role == "Staff")
                 return RedirectToAction("Dashboard", "Staff");
 

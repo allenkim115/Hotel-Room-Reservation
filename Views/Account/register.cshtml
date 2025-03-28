@@ -64,6 +64,11 @@
                 <h1 class="mb-4">REGISTRATION</h1>
 
                 <div class="mb-3">
+                    @Html.TextBoxFor(m => m.Username, new { @class = "form-control", placeholder = "USERNAME", required = "required" })
+                    @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
                     @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "EMAIL", required = "required" })
                     @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
                 </div>

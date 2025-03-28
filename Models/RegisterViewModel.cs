@@ -4,6 +4,9 @@ namespace WebApplication1.Models
 {
     public class RegisterViewModel
     {
+        [Required(ErrorMessage = "Username is required.")]
+        public string Username { get; set; }
+        
         [Required(ErrorMessage = "First name is required.")]
         public string FirstName { get; set; }
 
