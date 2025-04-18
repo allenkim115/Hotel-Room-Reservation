@@ -1,0 +1,241 @@
+@{
+    Layout = "_DashboardLayout";
+    ViewData["Title"] = "My Reservations";
+}
+
+<h1 class="page-title">My Reservations</h1>
+
+<div class="reservations-container">
+    <!-- Active Reservations -->
+    <div class="section-container">
+        <h2 class="section-title">Active Reservations</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="reservation-card">
+                    <div class="reservation-header">
+                        <h3>Deluxe Suite</h3>
+                        <span class="status-badge status-confirmed">Confirmed</span>
+                    </div>
+                    <div class="reservation-details">
+                        <div class="detail-item">
+                            <i class="fas fa-calendar"></i>
+                            <span>May 15 - May 20, 2023</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-user"></i>
+                            <span>2 Adults</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span>Total: $1,250</span>
+                        </div>
+                    </div>
+                    <div class="reservation-actions">
+                        <a href="#" class="btn btn-outline-maroon">View Details</a>
+                        <a href="#" class="btn btn-maroon">Modify</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="reservation-card">
+                    <div class="reservation-header">
+                        <h3>Executive Room</h3>
+                        <span class="status-badge status-pending">Pending</span>
+                    </div>
+                    <div class="reservation-details">
+                        <div class="detail-item">
+                            <i class="fas fa-calendar"></i>
+                            <span>June 1 - June 5, 2023</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-user"></i>
+                            <span>1 Adult</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span>Total: $1,000</span>
+                        </div>
+                    </div>
+                    <div class="reservation-actions">
+                        <a href="#" class="btn btn-outline-maroon">View Details</a>
+                        <a href="#" class="btn btn-maroon">Modify</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Past Reservations -->
+    <div class="section-container">
+        <h2 class="section-title">Past Reservations</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="reservation-card">
+                    <div class="reservation-header">
+                        <h3>Standard Room</h3>
+                        <span class="status-badge status-completed">Completed</span>
+                    </div>
+                    <div class="reservation-details">
+                        <div class="detail-item">
+                            <i class="fas fa-calendar"></i>
+                            <span>March 10 - March 15, 2023</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-user"></i>
+                            <span>2 Adults</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span>Total: $750</span>
+                        </div>
+                    </div>
+                    <div class="reservation-actions">
+                        <a href="#" class="btn btn-outline-maroon">View Details</a>
+                        <a href="#" class="btn btn-maroon">Book Again</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .page-title {
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            text-align: center;
+        }
+
+        .section-container {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            border-radius: 3px;
+        }
+
+        .reservation-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .reservation-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .reservation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .reservation-header h3 {
+            color: var(--primary-color);
+            margin: 0;
+            font-size: 1.3rem;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .status-confirmed {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-completed {
+            background-color: #e2e3e5;
+            color: #383d41;
+        }
+
+        .reservation-details {
+            margin-bottom: 20px;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            color: var(--text-light);
+        }
+
+        .detail-item i {
+            color: var(--primary-color);
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .reservation-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-maroon {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-maroon:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(139, 28, 28, 0.3);
+            color: white;
+        }
+
+        .btn-outline-maroon {
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            background: transparent;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-outline-maroon:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+    </style>
+} 

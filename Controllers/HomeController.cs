@@ -6,7 +6,6 @@ using WebApplication1.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
-
 namespace NustarResort.Controllers
 {
     public class HomeController : Controller
@@ -17,26 +16,30 @@ namespace NustarResort.Controllers
         {
             _context = context;
         }
+
         public IActionResult Index()
         {
             return View();
         }
+
         public IActionResult BookNow()
         {
             return View();
         }
+
         public IActionResult login()
         {
             return View();
         }
+
         public IActionResult register()
         {
             return View();
         }
-        [Authorize] // Add this attribute (requires using Microsoft.AspNetCore.Authorization)
+
+        [Authorize]
         public IActionResult Profile()
         {
-            // Get the currently logged-in user
             var username = User.Identity?.Name;
             
             if (string.IsNullOrEmpty(username))
@@ -44,25 +47,55 @@ namespace NustarResort.Controllers
                 return RedirectToAction("Login", "Account");
             }
             
-            // You'll need to inject ApplicationDbContext to access user data
             var user = _context.Users.FirstOrDefault(u => u.Username == username);
             
             if (user == null)
             {
                 return RedirectToAction("Login", "Account");
             }
+
+            var profileViewModel = ProfileViewModel.FromUser(user);
             
-            return View(user);
+            // Add mock data for the view
+            profileViewModel.TotalStays = 12;
+            profileViewModel.UpcomingStays = 5;
+            profileViewModel.PastStays = 7;
+            
+            return View(profileViewModel);
         }
+
+        [Authorize]
+        public IActionResult Services()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public IActionResult Reservations()
+        {
+            return View();
+        }
+
+        [Authorize]
         public IActionResult AdminDash()
         {
             return View();
         }
+
+        [Authorize]
         public IActionResult Indexlogin()
         {
             return View();
         }
+
+        [Authorize]
         public IActionResult BookNowlogin()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public IActionResult RoomTypes()
         {
             return View();
         }
@@ -70,10 +103,9 @@ namespace NustarResort.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            HttpContext.Session.Clear(); // Clear session data
+            HttpContext.Session.Clear();
             return RedirectToAction("Index", "Home");
         }
-
     }
 }
 

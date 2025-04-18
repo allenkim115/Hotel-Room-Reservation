@@ -1,0 +1,40 @@
+<!-- Sidebar -->
+<div class="sidebar">
+    <div class="sidebar-header">
+        <img src="~/images/logo1.png" alt="Logo">
+        <h5 class="mb-0">Nustar Hotel</h5>
+    </div>
+    
+    <nav class="mt-4">
+        @{
+            var currentController = ViewContext.RouteData.Values["Controller"]?.ToString();
+            var currentAction = ViewContext.RouteData.Values["Action"]?.ToString();
+            
+            var isDashboardActive = currentController == "Home" && currentAction == "Indexlogin";
+            var isRoomTypesActive = currentController == "Home" && currentAction == "RoomTypes";
+            var isReservationsActive = currentController == "Home" && currentAction == "Reservations";
+            var isServicesActive = currentController == "Home" && currentAction == "Services";
+            var isProfileActive = currentController == "Home" && currentAction == "Profile";
+            var isHelpActive = currentController == "Home" && currentAction == "Help";
+        }
+        
+        <a href="@Url.Action("Indexlogin", "Home")" class="nav-link @(isDashboardActive ? "active" : "")">
+            <i class="fas fa-home"></i> Dashboard
+        </a>
+        <a href="@Url.Action("RoomTypes", "Home")" class="nav-link @(isRoomTypesActive ? "active" : "")">
+            <i class="fas fa-calendar-plus"></i> Book a Room
+        </a>
+        <a href="@Url.Action("Reservations", "Home")" class="nav-link @(isReservationsActive ? "active" : "")">
+            <i class="fas fa-history"></i> My Reservations
+        </a>
+        <a href="@Url.Action("Services", "Home")" class="nav-link @(isServicesActive ? "active" : "")">
+            <i class="fas fa-concierge-bell"></i> Services
+        </a>
+        <a href="@Url.Action("Profile", "Home")" class="nav-link @(isProfileActive ? "active" : "")">
+            <i class="fas fa-user-circle"></i> My Profile
+        </a>
+        <a href="@Url.Action("Help", "Home")" class="nav-link @(isHelpActive ? "active" : "")">
+            <i class="fas fa-question-circle"></i> Help & Support
+        </a>
+    </nav>
+</div> 

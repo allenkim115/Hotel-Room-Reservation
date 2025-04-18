@@ -1,0 +1,162 @@
+@{
+    Layout = "_DashboardLayout";
+    ViewData["Title"] = "Room Types";
+}
+
+<h1 class="page-title">Our Room Types</h1>
+<div class="row">
+    <!-- Standard Room -->
+    <div class="col-md-4">
+        <div class="room-card">
+            <img src="~/images/standard.png" alt="Standard Room" class="room-image">
+            <div class="room-details">
+                <h3 class="room-title">Standard Room</h3>
+                <p class="room-price">$150/night</p>
+                <ul class="room-features">
+                    <li><i class="fas fa-bed"></i> 1 Queen Bed</li>
+                    <li><i class="fas fa-user"></i> 2 Guests</li>
+                    <li><i class="fas fa-tv"></i> 32" TV</li>
+                    <li><i class="fas fa-wifi"></i> Free WiFi</li>
+                    <li><i class="fas fa-coffee"></i> Coffee Maker</li>
+                </ul>
+                <a href="@Url.Action("BookNowlogin", "Home")" class="btn btn-book">Book Now</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Deluxe Room -->
+    <div class="col-md-4">
+        <div class="room-card">
+            <img src="~/images/room.png" alt="Deluxe Room" class="room-image">
+            <div class="room-details">
+                <h3 class="room-title">Deluxe Room</h3>
+                <p class="room-price">$250/night</p>
+                <ul class="room-features">
+                    <li><i class="fas fa-bed"></i> 1 King Bed</li>
+                    <li><i class="fas fa-user"></i> 2 Guests</li>
+                    <li><i class="fas fa-tv"></i> 42" TV</li>
+                    <li><i class="fas fa-wifi"></i> Free WiFi</li>
+                    <li><i class="fas fa-coffee"></i> Coffee Maker</li>
+                    <li><i class="fas fa-bath"></i> Jacuzzi</li>
+                </ul>
+                <a href="@Url.Action("BookNowlogin", "Home")" class="btn btn-book">Book Now</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Suite -->
+    <div class="col-md-4">
+        <div class="room-card">
+            <img src="~/images/suite.png" alt="Suite" class="room-image">
+            <div class="room-details">
+                <h3 class="room-title">Suite</h3>
+                <p class="room-price">$350/night</p>
+                <ul class="room-features">
+                    <li><i class="fas fa-bed"></i> 1 King Bed + Sofa Bed</li>
+                    <li><i class="fas fa-user"></i> 4 Guests</li>
+                    <li><i class="fas fa-tv"></i> 55" TV</li>
+                    <li><i class="fas fa-wifi"></i> Free WiFi</li>
+                    <li><i class="fas fa-coffee"></i> Coffee Maker</li>
+                    <li><i class="fas fa-bath"></i> Jacuzzi</li>
+                    <li><i class="fas fa-utensils"></i> Kitchenette</li>
+                </ul>
+                <a href="@Url.Action("BookNowlogin", "Home")" class="btn btn-book">Book Now</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .page-title {
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            text-align: center;
+        }
+
+        .room-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            margin-bottom: 30px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .room-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .room-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .room-card:hover .room-image {
+            transform: scale(1.05);
+        }
+
+        .room-details {
+            padding: 25px;
+        }
+
+        .room-title {
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .room-price {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .room-features {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 25px;
+        }
+
+        .room-features li {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            color: var(--text-light);
+        }
+
+        .room-features i {
+            color: var(--primary-color);
+            margin-right: 12px;
+            font-size: 1.1rem;
+        }
+
+        .btn-book {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .btn-book:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(139, 28, 28, 0.3);
+            color: white;
+        }
+    </style>
+} 
