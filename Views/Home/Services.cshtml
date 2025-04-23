@@ -22,7 +22,7 @@
                         <li><i class="fas fa-map-marker-alt"></i> Ground Floor</li>
                         <li><i class="fas fa-dollar-sign"></i> $$$</li>
                     </ul>
-                    <a href="#" class="btn btn-maroon">Book a Table</a>
+                    <button type="button" class="btn btn-maroon" data-bs-toggle="modal" data-bs-target="#restaurantModal">Book a Table</button>
                 </div>
             </div>
             <div class="col-md-4">
@@ -37,7 +37,7 @@
                         <li><i class="fas fa-map-marker-alt"></i> Lobby</li>
                         <li><i class="fas fa-dollar-sign"></i> $$</li>
                     </ul>
-                    <a href="#" class="btn btn-maroon">Order Now</a>
+                    <button type="button" class="btn btn-maroon" data-bs-toggle="modal" data-bs-target="#coffeeShopModal">Order Now</button>
                 </div>
             </div>
             <div class="col-md-4">
@@ -52,7 +52,7 @@
                         <li><i class="fas fa-map-marker-alt"></i> 2nd Floor</li>
                         <li><i class="fas fa-dollar-sign"></i> $$$</li>
                     </ul>
-                    <a href="#" class="btn btn-maroon">Reserve</a>
+                    <button type="button" class="btn btn-maroon" data-bs-toggle="modal" data-bs-target="#barLoungeModal">Reserve</button>
                 </div>
             </div>
         </div>
@@ -74,7 +74,7 @@
                         <li><i class="fas fa-map-marker-alt"></i> Spa Center</li>
                         <li><i class="fas fa-dollar-sign"></i> $$$$</li>
                     </ul>
-                    <a href="#" class="btn btn-maroon">Book Treatment</a>
+                    <button type="button" class="btn btn-maroon" data-bs-toggle="modal" data-bs-target="#spaModal">Book Treatment</button>
                 </div>
             </div>
             <div class="col-md-4">
@@ -89,7 +89,7 @@
                         <li><i class="fas fa-map-marker-alt"></i> 3rd Floor</li>
                         <li><i class="fas fa-dollar-sign"></i> Free for Guests</li>
                     </ul>
-                    <a href="#" class="btn btn-maroon">View Schedule</a>
+                    <button type="button" class="btn btn-maroon" data-bs-toggle="modal" data-bs-target="#poolModal">View Schedule</button>
                 </div>
             </div>
             <div class="col-md-4">
@@ -104,7 +104,7 @@
                         <li><i class="fas fa-map-marker-alt"></i> 3rd Floor</li>
                         <li><i class="fas fa-dollar-sign"></i> Free for Guests</li>
                     </ul>
-                    <a href="#" class="btn btn-maroon">View Facilities</a>
+                    <button type="button" class="btn btn-maroon" data-bs-toggle="modal" data-bs-target="#fitnessModal">View Facilities</button>
                 </div>
             </div>
         </div>
@@ -126,7 +126,7 @@
                         <li><i class="fas fa-phone"></i> Ext. 1234</li>
                         <li><i class="fas fa-dollar-sign"></i> Menu Prices</li>
                     </ul>
-                    <a href="#" class="btn btn-maroon">View Menu</a>
+                    <button type="button" class="btn btn-maroon" data-bs-toggle="modal" data-bs-target="#roomServiceModal">View Menu</button>
                 </div>
             </div>
             <div class="col-md-4">
@@ -141,7 +141,7 @@
                         <li><i class="fas fa-map-marker-alt"></i> Main Entrance</li>
                         <li><i class="fas fa-dollar-sign"></i> $20/day</li>
                     </ul>
-                    <a href="#" class="btn btn-maroon">Book Parking</a>
+                    <button type="button" class="btn btn-maroon" data-bs-toggle="modal" data-bs-target="#valetModal">Book Parking</button>
                 </div>
             </div>
             <div class="col-md-4">
@@ -156,8 +156,343 @@
                         <li><i class="fas fa-map-marker-alt"></i> 1st Floor</li>
                         <li><i class="fas fa-dollar-sign"></i> Free for Guests</li>
                     </ul>
-                    <a href="#" class="btn btn-maroon">View Facilities</a>
+                    <button type="button" class="btn btn-maroon" data-bs-toggle="modal" data-bs-target="#businessModal">View Facilities</button>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Restaurant Booking Modal -->
+<div class="modal fade" id="restaurantModal" tabindex="-1" aria-labelledby="restaurantModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="restaurantModalLabel">Book a Table - Main Restaurant</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="restaurantBookingForm">
+                    <div class="mb-3">
+                        <label for="restaurantDate" class="form-label">Date</label>
+                        <input type="date" class="form-control" id="restaurantDate" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="restaurantTime" class="form-label">Time</label>
+                        <input type="time" class="form-control" id="restaurantTime" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="restaurantGuests" class="form-label">Number of Guests</label>
+                        <input type="number" class="form-control" id="restaurantGuests" min="1" max="10" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="restaurantSpecialRequests" class="form-label">Special Requests</label>
+                        <textarea class="form-control" id="restaurantSpecialRequests" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-maroon" onclick="submitRestaurantBooking()">Submit Booking</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Coffee Shop Modal -->
+<div class="modal fade" id="coffeeShopModal" tabindex="-1" aria-labelledby="coffeeShopModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="coffeeShopModalLabel">Order from Coffee Shop</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="coffeeShopForm">
+                    <div class="mb-3">
+                        <label for="coffeeShopDate" class="form-label">Date</label>
+                        <input type="date" class="form-control" id="coffeeShopDate" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="coffeeShopTime" class="form-label">Time</label>
+                        <input type="time" class="form-control" id="coffeeShopTime" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="coffeeShopItems" class="form-label">Items</label>
+                        <select class="form-select" id="coffeeShopItems" multiple required>
+                            <option value="espresso">Espresso</option>
+                            <option value="cappuccino">Cappuccino</option>
+                            <option value="latte">Latte</option>
+                            <option value="pastry">Pastry</option>
+                            <option value="sandwich">Sandwich</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="coffeeShopSpecialRequests" class="form-label">Special Requests</label>
+                        <textarea class="form-control" id="coffeeShopSpecialRequests" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-maroon" onclick="submitCoffeeShopOrder()">Place Order</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bar & Lounge Modal -->
+<div class="modal fade" id="barLoungeModal" tabindex="-1" aria-labelledby="barLoungeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="barLoungeModalLabel">Reserve at Bar & Lounge</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="barLoungeForm">
+                    <div class="mb-3">
+                        <label for="barLoungeDate" class="form-label">Date</label>
+                        <input type="date" class="form-control" id="barLoungeDate" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="barLoungeTime" class="form-label">Time</label>
+                        <input type="time" class="form-control" id="barLoungeTime" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="barLoungeGuests" class="form-label">Number of Guests</label>
+                        <input type="number" class="form-control" id="barLoungeGuests" min="1" max="8" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="barLoungeTableType" class="form-label">Table Type</label>
+                        <select class="form-select" id="barLoungeTableType" required>
+                            <option value="bar">Bar Table</option>
+                            <option value="lounge">Lounge Table</option>
+                            <option value="private">Private Booth</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="barLoungeSpecialRequests" class="form-label">Special Requests</label>
+                        <textarea class="form-control" id="barLoungeSpecialRequests" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-maroon" onclick="submitBarLoungeReservation()">Submit Reservation</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Spa Services Modal -->
+<div class="modal fade" id="spaModal" tabindex="-1" aria-labelledby="spaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="spaModalLabel">Book Spa Treatment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="spaForm">
+                    <div class="mb-3">
+                        <label for="spaDate" class="form-label">Date</label>
+                        <input type="date" class="form-control" id="spaDate" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="spaTime" class="form-label">Time</label>
+                        <input type="time" class="form-control" id="spaTime" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="spaTreatment" class="form-label">Treatment Type</label>
+                        <select class="form-select" id="spaTreatment" required>
+                            <option value="massage">Swedish Massage</option>
+                            <option value="facial">Facial Treatment</option>
+                            <option value="body">Body Treatment</option>
+                            <option value="package">Spa Package</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="spaDuration" class="form-label">Duration</label>
+                        <select class="form-select" id="spaDuration" required>
+                            <option value="30">30 minutes</option>
+                            <option value="60">60 minutes</option>
+                            <option value="90">90 minutes</option>
+                            <option value="120">120 minutes</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="spaSpecialRequests" class="form-label">Special Requests</label>
+                        <textarea class="form-control" id="spaSpecialRequests" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-maroon" onclick="submitSpaBooking()">Book Treatment</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Swimming Pool Modal -->
+<div class="modal fade" id="poolModal" tabindex="-1" aria-labelledby="poolModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="poolModalLabel">Pool Schedule</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="pool-schedule">
+                    <h6>Daily Schedule</h6>
+                    <ul class="list-unstyled">
+                        <li><strong>Morning:</strong> 6:00 AM - 12:00 PM</li>
+                        <li><strong>Afternoon:</strong> 1:00 PM - 6:00 PM</li>
+                        <li><strong>Evening:</strong> 7:00 PM - 10:00 PM</li>
+                    </ul>
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i> The pool is free for all hotel guests. Please bring your room key for access.
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Fitness Center Modal -->
+<div class="modal fade" id="fitnessModal" tabindex="-1" aria-labelledby="fitnessModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="fitnessModalLabel">Fitness Center Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="fitness-info">
+                    <h6>Available Facilities</h6>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check"></i> Cardio Equipment</li>
+                        <li><i class="fas fa-check"></i> Weight Training</li>
+                        <li><i class="fas fa-check"></i> Yoga Area</li>
+                        <li><i class="fas fa-check"></i> Personal Training</li>
+                    </ul>
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i> The fitness center is open 24/7 for hotel guests. Please bring your room key for access.
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Room Service Modal -->
+<div class="modal fade" id="roomServiceModal" tabindex="-1" aria-labelledby="roomServiceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="roomServiceModalLabel">Room Service Menu</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Breakfast</h6>
+                        <ul class="list-unstyled">
+                            <li>Continental Breakfast - $15</li>
+                            <li>Full English Breakfast - $20</li>
+                            <li>Pancakes with Maple Syrup - $12</li>
+                            <li>Fresh Fruit Platter - $10</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Lunch & Dinner</h6>
+                        <ul class="list-unstyled">
+                            <li>Club Sandwich - $14</li>
+                            <li>Caesar Salad - $12</li>
+                            <li>Grilled Salmon - $25</li>
+                            <li>Beef Tenderloin - $28</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="alert alert-info mt-3">
+                    <i class="fas fa-phone"></i> To place an order, please call extension 1234
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Valet Parking Modal -->
+<div class="modal fade" id="valetModal" tabindex="-1" aria-labelledby="valetModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="valetModalLabel">Book Valet Parking</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="valetForm">
+                    <div class="mb-3">
+                        <label for="valetDate" class="form-label">Date</label>
+                        <input type="date" class="form-control" id="valetDate" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="valetDuration" class="form-label">Duration (days)</label>
+                        <input type="number" class="form-control" id="valetDuration" min="1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="valetCarModel" class="form-label">Car Model</label>
+                        <input type="text" class="form-control" id="valetCarModel" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="valetLicensePlate" class="form-label">License Plate</label>
+                        <input type="text" class="form-control" id="valetLicensePlate" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-maroon" onclick="submitValetBooking()">Book Parking</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Business Center Modal -->
+<div class="modal fade" id="businessModal" tabindex="-1" aria-labelledby="businessModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="businessModalLabel">Business Center Facilities</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="business-facilities">
+                    <h6>Available Services</h6>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check"></i> High-speed Internet</li>
+                        <li><i class="fas fa-check"></i> Printing & Scanning</li>
+                        <li><i class="fas fa-check"></i> Meeting Rooms</li>
+                        <li><i class="fas fa-check"></i> Fax Services</li>
+                        <li><i class="fas fa-check"></i> Computer Workstations</li>
+                    </ul>
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i> All services are free for hotel guests. Please present your room key at the business center.
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -277,4 +612,115 @@
             color: white;
         }
     </style>
+}
+
+@section Scripts {
+    <script>
+        function submitRestaurantBooking() {
+            const form = document.getElementById('restaurantBookingForm');
+            if (form.checkValidity()) {
+                // Here you would typically send the data to your backend
+                const bookingData = {
+                    date: document.getElementById('restaurantDate').value,
+                    time: document.getElementById('restaurantTime').value,
+                    guests: document.getElementById('restaurantGuests').value,
+                    specialRequests: document.getElementById('restaurantSpecialRequests').value
+                };
+                
+                // TODO: Add your API call here
+                console.log('Booking submitted:', bookingData);
+                
+                // Show success message
+                alert('Your table has been booked successfully!');
+                
+                // Close the modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('restaurantModal'));
+                modal.hide();
+            } else {
+                form.reportValidity();
+            }
+        }
+
+        function submitCoffeeShopOrder() {
+            const form = document.getElementById('coffeeShopForm');
+            if (form.checkValidity()) {
+                const orderData = {
+                    date: document.getElementById('coffeeShopDate').value,
+                    time: document.getElementById('coffeeShopTime').value,
+                    items: Array.from(document.getElementById('coffeeShopItems').selectedOptions).map(option => option.value),
+                    specialRequests: document.getElementById('coffeeShopSpecialRequests').value
+                };
+                
+                console.log('Order submitted:', orderData);
+                alert('Your order has been placed successfully!');
+                
+                const modal = bootstrap.Modal.getInstance(document.getElementById('coffeeShopModal'));
+                modal.hide();
+            } else {
+                form.reportValidity();
+            }
+        }
+
+        function submitBarLoungeReservation() {
+            const form = document.getElementById('barLoungeForm');
+            if (form.checkValidity()) {
+                const reservationData = {
+                    date: document.getElementById('barLoungeDate').value,
+                    time: document.getElementById('barLoungeTime').value,
+                    guests: document.getElementById('barLoungeGuests').value,
+                    tableType: document.getElementById('barLoungeTableType').value,
+                    specialRequests: document.getElementById('barLoungeSpecialRequests').value
+                };
+                
+                console.log('Reservation submitted:', reservationData);
+                alert('Your reservation has been confirmed!');
+                
+                const modal = bootstrap.Modal.getInstance(document.getElementById('barLoungeModal'));
+                modal.hide();
+            } else {
+                form.reportValidity();
+            }
+        }
+
+        function submitSpaBooking() {
+            const form = document.getElementById('spaForm');
+            if (form.checkValidity()) {
+                const bookingData = {
+                    date: document.getElementById('spaDate').value,
+                    time: document.getElementById('spaTime').value,
+                    treatment: document.getElementById('spaTreatment').value,
+                    duration: document.getElementById('spaDuration').value,
+                    specialRequests: document.getElementById('spaSpecialRequests').value
+                };
+                
+                console.log('Spa booking submitted:', bookingData);
+                alert('Your spa treatment has been booked successfully!');
+                
+                const modal = bootstrap.Modal.getInstance(document.getElementById('spaModal'));
+                modal.hide();
+            } else {
+                form.reportValidity();
+            }
+        }
+
+        function submitValetBooking() {
+            const form = document.getElementById('valetForm');
+            if (form.checkValidity()) {
+                const bookingData = {
+                    date: document.getElementById('valetDate').value,
+                    duration: document.getElementById('valetDuration').value,
+                    carModel: document.getElementById('valetCarModel').value,
+                    licensePlate: document.getElementById('valetLicensePlate').value
+                };
+                
+                console.log('Valet booking submitted:', bookingData);
+                alert('Your valet parking has been booked successfully!');
+                
+                const modal = bootstrap.Modal.getInstance(document.getElementById('valetModal'));
+                modal.hide();
+            } else {
+                form.reportValidity();
+            }
+        }
+    </script>
 } 
