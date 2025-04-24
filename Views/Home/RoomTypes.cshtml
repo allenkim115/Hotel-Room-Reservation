@@ -3,7 +3,7 @@
     ViewData["Title"] = "Room Types";
 }
 
-<h1 class="page-title">Our Room Types</h1>
+<h1 class="page-title">Hotel Rooms</h1>
 <div class="row">
     <!-- Standard Room -->
     <div class="col-md-4">
@@ -19,7 +19,7 @@
                     <li><i class="fas fa-wifi"></i> Free WiFi</li>
                     <li><i class="fas fa-coffee"></i> Coffee Maker</li>
                 </ul>
-                <a href="@Url.Action("BookNowlogin", "Home")" class="btn btn-book">Book Now</a>
+                <a href="#" class="btn btn-book" data-bs-toggle="modal" data-bs-target="#bookNowModal">Book Now</a>
             </div>
         </div>
     </div>
@@ -39,7 +39,7 @@
                     <li><i class="fas fa-coffee"></i> Coffee Maker</li>
                     <li><i class="fas fa-bath"></i> Jacuzzi</li>
                 </ul>
-                <a href="@Url.Action("BookNowlogin", "Home")" class="btn btn-book">Book Now</a>
+                <a href="#" class="btn btn-book" data-bs-toggle="modal" data-bs-target="#bookNowModal">Book Now</a>
             </div>
         </div>
     </div>
@@ -60,7 +60,35 @@
                     <li><i class="fas fa-bath"></i> Jacuzzi</li>
                     <li><i class="fas fa-utensils"></i> Kitchenette</li>
                 </ul>
-                <a href="@Url.Action("BookNowlogin", "Home")" class="btn btn-book">Book Now</a>
+                <a href="#" class="btn btn-book" data-bs-toggle="modal" data-bs-target="#bookNowModal">Book Now</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="bookNowModal" tabindex="-1" aria-labelledby="bookNowModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="bookNowModalLabel">Book Now</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="checkInDate" class="form-label">Check-In Date</label>
+                        <input type="date" class="form-control" id="checkInDate">
+                    </div>
+                    <div class="mb-3">
+                        <label for="checkOutDate" class="form-label">Check-Out Date</label>
+                        <input type="date" class="form-control" id="checkOutDate">
+                    </div>
+                    <div class="mb-3">
+                        <label for="guests" class="form-label">Number of Guests</label>
+                        <input type="number" class="form-control" id="guests" min="1">
+                    </div>
+                    <button type="submit" class="btn btn-book">Confirm Booking</button>
+                </form>
             </div>
         </div>
     </div>
@@ -158,5 +186,28 @@
             box-shadow: 0 4px 15px rgba(139, 28, 28, 0.3);
             color: white;
         }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .col-md-4 {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .room-card {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .room-details {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
     </style>
-} 
+}
