@@ -60,7 +60,7 @@
             <p class="text-muted mb-2">May 15 - May 20, 2023</p>
             <div class="d-flex justify-content-between">
                 <div><i class="fas fa-user me-1"></i> 2 Adults</div>
-                <a href="#" class="btn btn-outline-maroon">View Details</a>
+                <a href="#" class="btn btn-outline-maroon" data-bs-toggle="modal" data-bs-target="#viewDetailsModal">View Details</a>
             </div>
         </div>
     </div>
@@ -73,7 +73,49 @@
             <p class="text-muted mb-2">June 1 - June 5, 2023</p>
             <div class="d-flex justify-content-between">
                 <div><i class="fas fa-user me-1"></i> 1 Adult</div>
-                <a href="#" class="btn btn-outline-maroon">View Details</a>
+                <a href="#" class="btn btn-outline-maroon" data-bs-toggle="modal" data-bs-target="#viewDetailsPendingModal">View Details</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- View Details Modal -->
+<div class="modal fade" id="viewDetailsModal" tabindex="-1" aria-labelledby="viewDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewDetailsModalLabel">Reservation Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Room:</strong> Deluxe Suite</p>
+                <p><strong>Dates:</strong> May 15 - May 20, 2023</p>
+                <p><strong>Guests:</strong> 2 Adults</p>
+                <p><strong>Total:</strong> $1,250</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- View Details Modal for Pending Reservation -->
+<div class="modal fade" id="viewDetailsPendingModal" tabindex="-1" aria-labelledby="viewDetailsPendingModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewDetailsPendingModalLabel">Reservation Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Room:</strong> Executive Room</p>
+                <p><strong>Dates:</strong> June 1 - June 5, 2023</p>
+                <p><strong>Guests:</strong> 1 Adult</p>
+                <p><strong>Total:</strong> $850</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -87,7 +129,7 @@
             <i class="fas fa-utensils"></i>
             <h5>Restaurant</h5>
             <p class="small text-muted">Book a table at our fine dining restaurant</p>
-            <a href="#" class="btn btn-maroon">Book Now</a>
+            <button class="btn btn-maroon" data-bs-toggle="modal" data-bs-target="#restaurantModal">Book Now</button>
         </div>
     </div>
     <div class="col-md-4">
@@ -95,7 +137,7 @@
             <i class="fas fa-spa"></i>
             <h5>Spa & Wellness</h5>
             <p class="small text-muted">Relax with our premium spa treatments</p>
-            <a href="#" class="btn btn-maroon">Book Now</a>
+            <button class="btn btn-maroon" data-bs-toggle="modal" data-bs-target="#spaModal">Book Now</button>
         </div>
     </div>
     <div class="col-md-4">
@@ -103,7 +145,131 @@
             <i class="fas fa-concierge-bell"></i>
             <h5>Room Service</h5>
             <p class="small text-muted">24/7 room service available</p>
-            <a href="#" class="btn btn-maroon">Order Now</a>
+            <button class="btn btn-maroon" data-bs-toggle="modal" data-bs-target="#roomServiceModal">Order Now</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modals -->
+<div class="modal fade" id="restaurantModal" tabindex="-1" aria-labelledby="restaurantModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="restaurantModalLabel">Book a Table - Main Restaurant</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="restaurantBookingForm">
+                    <div class="mb-3">
+                        <label for="restaurantDate" class="form-label">Date</label>
+                        <input type="date" class="form-control" id="restaurantDate" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="restaurantTime" class="form-label">Time</label>
+                        <input type="time" class="form-control" id="restaurantTime" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="restaurantGuests" class="form-label">Number of Guests</label>
+                        <input type="number" class="form-control" id="restaurantGuests" min="1" max="10" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="restaurantSpecialRequests" class="form-label">Special Requests</label>
+                        <textarea class="form-control" id="restaurantSpecialRequests" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-maroon" onclick="submitRestaurantBooking()">Submit Booking</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="spaModal" tabindex="-1" aria-labelledby="spaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="spaModalLabel">Book Spa Treatment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="spaForm">
+                    <div class="mb-3">
+                        <label for="spaDate" class="form-label">Date</label>
+                        <input type="date" class="form-control" id="spaDate" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="spaTime" class="form-label">Time</label>
+                        <input type="time" class="form-control" id="spaTime" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="spaTreatment" class="form-label">Treatment Type</label>
+                        <select class="form-select" id="spaTreatment" required>
+                            <option value="massage">Swedish Massage</option>
+                            <option value="facial">Facial Treatment</option>
+                            <option value="body">Body Treatment</option>
+                            <option value="package">Spa Package</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="spaDuration" class="form-label">Duration</label>
+                        <select class="form-select" id="spaDuration" required>
+                            <option value="30">30 minutes</option>
+                            <option value="60">60 minutes</option>
+                            <option value="90">90 minutes</option>
+                            <option value="120">120 minutes</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="spaSpecialRequests" class="form-label">Special Requests</label>
+                        <textarea class="form-control" id="spaSpecialRequests" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-maroon" onclick="submitSpaBooking()">Book Treatment</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="roomServiceModal" tabindex="-1" aria-labelledby="roomServiceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="roomServiceModalLabel">Room Service Menu</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Breakfast</h6>
+                        <ul class="list-unstyled">
+                            <li>Continental Breakfast - $15</li>
+                            <li>Full English Breakfast - $20</li>
+                            <li>Pancakes with Maple Syrup - $12</li>
+                            <li>Fresh Fruit Platter - $10</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Lunch & Dinner</h6>
+                        <ul class="list-unstyled">
+                            <li>Club Sandwich - $14</li>
+                            <li>Caesar Salad - $12</li>
+                            <li>Grilled Salmon - $25</li>
+                            <li>Beef Tenderloin - $28</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="alert alert-info mt-3">
+                    <i class="fas fa-phone"></i> To place an order, please call extension 1234
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
         </div>
     </div>
 </div>
