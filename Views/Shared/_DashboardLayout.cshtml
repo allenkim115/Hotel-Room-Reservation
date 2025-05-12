@@ -1,3 +1,5 @@
+@model WebApplication1.Models.BaseViewModel
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -142,13 +144,17 @@
     @RenderSection("Styles", required: false)
 </head>
 <body>
-    @await Html.PartialAsync("_TopNav")
+    @{
+        var baseViewModel = Model ?? (ViewData["BaseViewModel"] as WebApplication1.Models.BaseViewModel) ?? new WebApplication1.Models.BaseViewModel();
+    }
+    
+    @await Html.PartialAsync("_TopNav", baseViewModel)
     
     <div class="dashboard-container">
         <div class="row g-4">
             <!-- Sidebar -->
             <div class="col-lg-3 d-none d-lg-block">
-                @await Html.PartialAsync("_Sidebar")
+                @await Html.PartialAsync("_Sidebar", baseViewModel)
             </div>
             
             <!-- Main Content -->
