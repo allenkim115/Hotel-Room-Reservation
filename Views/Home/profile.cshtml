@@ -1,4 +1,4 @@
-@model WebApplication1.Models.ProfileViewModel
+@model WebApplication1.Models.BaseViewModel
 
 @{
     Layout = "_DashboardLayout";
@@ -17,8 +17,8 @@
                             <i class="fas fa-camera"></i>
                         </button>
                     </div>
-                    <h2 class="profile-name">@Model.FirstName @Model.LastName</h2>
-                    <p class="profile-email">@Model.Email</p>
+                    <h2 class="profile-name">@Model.Profile.FirstName @Model.Profile.LastName</h2>
+                    <p class="profile-email">@Model.Profile.Email</p>
                     <div class="profile-status">
                         <span class="badge badge-success">Active Member</span>
                         <span class="badge badge-primary">Gold Tier</span>
@@ -26,15 +26,15 @@
                 </div>
                 <div class="profile-stats">
                     <div class="stat-item">
-                        <h4>@Model.TotalStays</h4>
+                        <h4>@Model.Profile.TotalStays</h4>
                         <p>Total Stays</p>
                     </div>
                     <div class="stat-item">
-                        <h4>@Model.UpcomingStays</h4>
+                        <h4>@Model.Profile.UpcomingStays</h4>
                         <p>Upcoming</p>
                     </div>
                     <div class="stat-item">
-                        <h4>@Model.PastStays</h4>
+                        <h4>@Model.Profile.PastStays</h4>
                         <p>Past Stays</p>
                     </div>
                 </div>
@@ -48,19 +48,19 @@
                 <form class="settings-form">
                     <div class="form-group">
                         <label>Full Name</label>
-                        <input type="text" class="form-control" value="@Model.FirstName @Model.LastName">
+                        <input type="text" class="form-control" value="@Model.Profile.FirstName @Model.Profile.LastName">
                     </div>
                     <div class="form-group">
                         <label>Email Address</label>
-                        <input type="email" class="form-control" value="@Model.Email">
+                        <input type="email" class="form-control" value="@Model.Profile.Email">
                     </div>
                     <div class="form-group">
                         <label>Phone Number</label>
-                        <input type="tel" class="form-control" value="@Model.PhoneNumber">
+                        <input type="tel" class="form-control" value="@Model.Profile.PhoneNumber">
                     </div>
                     <div class="form-group">
                         <label>Address</label>
-                        <textarea class="form-control" rows="3">@Model.Address</textarea>
+                        <textarea class="form-control" rows="3">@Model.Profile.Address</textarea>
                     </div>
                     <div class="form-group">
                         <label>Preferred Language</label>

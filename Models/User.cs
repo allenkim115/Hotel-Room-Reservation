@@ -27,7 +27,7 @@ namespace WebApplication1.Models
 
         [Required]
         [Column("PASSWORD")]
-        public string Password { get; set; }  // 🔴 Store as a hashed password!
+        public string Password { get; set; }
 
         [Required]
         [EmailAddress]

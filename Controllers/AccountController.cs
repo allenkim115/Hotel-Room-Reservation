@@ -49,7 +49,7 @@ namespace WebApplication1.Controllers
                 LastName = model.LastName,
                 Email = model.Email,
                 Username = model.Username,
-                Password = model.Password,  // 🚨 Consider hashing this
+                Password = model.Password, 
                 Role = "Guest"
             };
 

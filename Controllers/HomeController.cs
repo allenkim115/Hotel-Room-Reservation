@@ -6,98 +6,74 @@ using WebApplication1.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
-namespace NustarResort.Controllers
+namespace WebApplication1.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
-        private readonly ApplicationDbContext _context;
-
-        public HomeController(ApplicationDbContext context)
+        public HomeController(ApplicationDbContext context) : base(context)
         {
-            _context = context;
         }
 
         public IActionResult Index()
         {
-            return View();
+            return View(GetBaseViewModel());
         }
 
         public IActionResult BookNow()
         {
-            return View();
+            return View(GetBaseViewModel());
         }
 
-        public IActionResult login()
+        public IActionResult Login()
         {
-            return View();
+            return View(GetBaseViewModel());
         }
 
-        public IActionResult register()
+        public IActionResult Register()
         {
-            return View();
+            return View(GetBaseViewModel());
         }
 
         [Authorize]
         public IActionResult Profile()
         {
-            var username = User.Identity?.Name;
-            
-            if (string.IsNullOrEmpty(username))
-            {
-                return RedirectToAction("Login", "Account");
-            }
-            
-            var user = _context.Users.FirstOrDefault(u => u.Username == username);
-            
-            if (user == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
-            var profileViewModel = ProfileViewModel.FromUser(user);
-            
-            // Add mock data for the view
-            profileViewModel.TotalStays = 12;
-            profileViewModel.UpcomingStays = 5;
-            profileViewModel.PastStays = 7;
-            
-            return View(profileViewModel);
+            return AuthorizedView();
         }
 
         [Authorize]
         public IActionResult Services()
         {
-            return View();
+            return AuthorizedView();
         }
 
         [Authorize]
         public IActionResult Reservations()
         {
-            return View();
+            return AuthorizedView();
         }
 
         [Authorize]
         public IActionResult AdminDash()
         {
-            return View();
+            return AuthorizedView();
         }
 
         [Authorize]
         public IActionResult Indexlogin()
         {
-            return View();
+            return AuthorizedView();
         }
 
         [Authorize]
         public IActionResult BookNowlogin()
         {
-            return View();
+            return AuthorizedView();
         }
 
         [Authorize]
         public IActionResult RoomTypes()
         {
-            return View();
+            return AuthorizedView();
         }
 
         public async Task<IActionResult> Logout()
