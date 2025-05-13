@@ -19,6 +19,13 @@ namespace WebApplication1.Models
         [EmailAddress(ErrorMessage = "Invalid email format.")]
         public string Email { get; set; }
 
+        [Required(ErrorMessage = "Address is required.")]
+        public string Address { get; set; }
+
+        [Required(ErrorMessage = "Phone number is required.")]
+        [Phone(ErrorMessage = "Invalid phone number format.")]
+        public string PhoneNumber { get; set; }
+
         [Required(ErrorMessage = "Password is required.")]
         [DataType(DataType.Password)]
         [MinLength(6, ErrorMessage = "Password must be at least 6 characters.")]

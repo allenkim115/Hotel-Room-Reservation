@@ -6,440 +6,355 @@
 }
 
 <!-- User Profile Section -->
-<div class="profile-section">
+<div class="profile-section enhanced-profile-maroon text-white">
     <div class="row align-items-center">
         <div class="col-md-3 text-center">
-            <div class="user-avatar-large">
-                <i class="fas fa-user"></i>
+            <div class="user-avatar-large enhanced-avatar-maroon p-0" style="background: none; box-shadow: none;">
+                @if (!string.IsNullOrEmpty(Model.Profile.ProfileImageUrl))
+                {
+                    <img src="@Model.Profile.ProfileImageUrl" alt="Profile Picture" class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover; border: 5px solid #fff; box-shadow: 0 0 0 6px rgba(255,255,255,0.15), 0 8px 32px rgba(0,0,0,0.10); background: none;">
+                }
+                else
+                {
+                    <i class="fas fa-user" style="font-size: 5rem; color: #fff;"></i>
+                }
             </div>
         </div>
-        <div class="col-md-9">
-            <h3>Welcome back, @Model.Profile.FirstName @Model.Profile.LastName</h3>
-            <p class="mb-0">Member since January 2023</p>
-            <div class="mt-3">
-                <span class="badge bg-light text-dark me-2">Silver Member</span>
-                <span class="badge bg-light text-dark">5 Stays</span>
+        <div class="col-md-9 d-flex flex-column justify-content-center">
+            <h3 class="fw-bold mb-1 user-name-maroon text-white">Welcome, @Model.Profile.FirstName @Model.Profile.LastName</h3>
+            <div class="user-meta-maroon text-white-50">
+                <i class="fas fa-envelope me-2"></i>@Model.Profile.Email
             </div>
         </div>
     </div>
 </div>
 
-<!-- Quick Stats -->
-<h4 class="section-title">Quick Stats</h4>
-<div class="row mb-4">
-    <div class="col-md-4">
-        <div class="dashboard-card text-center">
-            <i class="fas fa-calendar-check"></i>
-            <h5>Active Reservations</h5>
-            <h3 class="text-maroon">2</h3>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="dashboard-card text-center">
-            <i class="fas fa-star"></i>
-            <h5>Loyalty Points</h5>
-            <h3 class="text-maroon">1,250</h3>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="dashboard-card text-center">
-            <i class="fas fa-gift"></i>
-            <h5>Special Offers</h5>
-            <h3 class="text-maroon">3</h3>
-        </div>
-    </div>
-</div>
+<hr class="section-divider mb-4 mt-0" />
 
 <!-- Current Reservations -->
-<h4 class="section-title">Current Reservations</h4>
-<div class="row mb-4">
-    <div class="col-md-6">
-        <div class="dashboard-card">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-                <h5 class="mb-0">Deluxe Suite</h5>
-                <span class="reservation-status status-confirmed">Confirmed</span>
+<h4 class="section-title mb-3"><i class="fas fa-bed me-2"></i>Current Reservations</h4>
+<div class="section-bg p-4 rounded-4">
+    <div class="row mb-2">
+        @if (Model.ActiveReservations != null && Model.ActiveReservations.Any())
+        {
+            var displayedReservations = Model.ActiveReservations.Take(2).ToList();
+            foreach (var reservation in displayedReservations)
+            {
+                <div class="col-md-6 mb-4">
+                    <div class="dashboard-card enhanced-card h-100 animate-fade-in reservation-accent-bar-maroon position-relative">
+                        <div class="reservation-accent-maroon"></div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5 class="fw-semibold mb-0"><i class="fas fa-door-open me-2 text-maroon"></i>@reservation.RoomType</h5>
+                            <span class="reservation-status badge-status-maroon">@reservation.Status</span>
+                        </div>
+                        <p class="text-muted mb-2"><i class="fas fa-calendar-alt me-1"></i>@reservation.CheckInDate.ToString("MMM dd") - @reservation.CheckOutDate.ToString("MMM dd, yyyy")</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div><i class="fas fa-user me-1"></i> @reservation.NumberOfGuests @(reservation.NumberOfGuests == 1 ? "Adult" : "Adults")</div>
+                            <a href="#" class="btn btn-outline-maroon btn-sm" data-bs-toggle="modal" data-bs-target="#viewDetailsModal-@reservation.Id">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- View Details Modal -->
+                <div class="modal fade enhanced-modal" id="viewDetailsModal-@reservation.Id" tabindex="-1" aria-labelledby="viewDetailsModalLabel-@reservation.Id" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content rounded-4 shadow-lg">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="viewDetailsModalLabel-@reservation.Id">Reservation Details</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p><strong>Room:</strong> @reservation.RoomType</p>
+                                <p><strong>Dates:</strong> @reservation.CheckInDate.ToString("MMM dd") - @reservation.CheckOutDate.ToString("MMM dd, yyyy")</p>
+                                <p><strong>Guests:</strong> @reservation.NumberOfGuests @(reservation.NumberOfGuests == 1 ? "Adult" : "Adults")</p>
+                                <p><strong>Total:</strong> $@reservation.TotalAmount.ToString("N2")</p>
+                                <p><strong>Status:</strong> <span class="badge bg-@(reservation.Status == "Confirmed" ? "success" : "warning")">@reservation.Status</span></p>
+                                @if (!string.IsNullOrEmpty(reservation.SpecialRequests))
+                                {
+                                    <p><strong>Special Requests:</strong> @reservation.SpecialRequests</p>
+                                }
+                            </div>
+                            <div class="modal-footer">
+                                @if (reservation.Status == "Pending")
+                                {
+                                    <button type="button" class="btn btn-danger" onclick="cancelReservation(@reservation.Id)">Cancel Reservation</button>
+                                }
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            if (Model.ActiveReservations.Count > 2)
+            {
+                <div class="col-12 text-center mt-2">
+                    <a href="@Url.Action("Reservations", "Home")" class="btn btn-outline-maroon see-more-btn"><i class="fas fa-arrow-right me-1"></i>See More</a>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i> You don't have any active reservations at the moment.
+                </div>
             </div>
-            <p class="text-muted mb-2">May 15 - May 20, 2023</p>
-            <div class="d-flex justify-content-between">
-                <div><i class="fas fa-user me-1"></i> 2 Adults</div>
-                <a href="#" class="btn btn-outline-maroon" data-bs-toggle="modal" data-bs-target="#viewDetailsModal">View Details</a>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="dashboard-card">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-                <h5 class="mb-0">Executive Room</h5>
-                <span class="reservation-status status-pending">Pending</span>
-            </div>
-            <p class="text-muted mb-2">June 1 - June 5, 2023</p>
-            <div class="d-flex justify-content-between">
-                <div><i class="fas fa-user me-1"></i> 1 Adult</div>
-                <a href="#" class="btn btn-outline-maroon" data-bs-toggle="modal" data-bs-target="#viewDetailsPendingModal">View Details</a>
-            </div>
-        </div>
+        }
     </div>
 </div>
 
-<!-- View Details Modal -->
-<div class="modal fade" id="viewDetailsModal" tabindex="-1" aria-labelledby="viewDetailsModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="viewDetailsModalLabel">Reservation Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p><strong>Room:</strong> Deluxe Suite</p>
-                <p><strong>Dates:</strong> May 15 - May 20, 2023</p>
-                <p><strong>Guests:</strong> 2 Adults</p>
-                <p><strong>Total:</strong> $1,250</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- View Details Modal for Pending Reservation -->
-<div class="modal fade" id="viewDetailsPendingModal" tabindex="-1" aria-labelledby="viewDetailsPendingModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="viewDetailsPendingModalLabel">Reservation Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p><strong>Room:</strong> Executive Room</p>
-                <p><strong>Dates:</strong> June 1 - June 5, 2023</p>
-                <p><strong>Guests:</strong> 1 Adult</p>
-                <p><strong>Total:</strong> $850</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
+<hr class="section-divider my-4" />
 
 <!-- Available Services -->
-<h4 class="section-title">Available Services</h4>
-<div class="row">
-    <div class="col-md-4">
-        <div class="service-card text-center">
-            <i class="fas fa-utensils"></i>
-            <h5>Restaurant</h5>
-            <p class="small text-muted">Book a table at our fine dining restaurant</p>
-            <button class="btn btn-maroon" data-bs-toggle="modal" data-bs-target="#restaurantModal">Book Now</button>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="service-card text-center">
-            <i class="fas fa-spa"></i>
-            <h5>Spa & Wellness</h5>
-            <p class="small text-muted">Relax with our premium spa treatments</p>
-            <button class="btn btn-maroon" data-bs-toggle="modal" data-bs-target="#spaModal">Book Now</button>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="service-card text-center">
-            <i class="fas fa-concierge-bell"></i>
-            <h5>Room Service</h5>
-            <p class="small text-muted">24/7 room service available</p>
-            <button class="btn btn-maroon" data-bs-toggle="modal" data-bs-target="#roomServiceModal">Order Now</button>
-        </div>
-    </div>
-</div>
-
-<!-- Modals -->
-<div class="modal fade" id="restaurantModal" tabindex="-1" aria-labelledby="restaurantModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="restaurantModalLabel">Book a Table - Main Restaurant</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="restaurantBookingForm">
-                    <div class="mb-3">
-                        <label for="restaurantDate" class="form-label">Date</label>
-                        <input type="date" class="form-control" id="restaurantDate" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="restaurantTime" class="form-label">Time</label>
-                        <input type="time" class="form-control" id="restaurantTime" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="restaurantGuests" class="form-label">Number of Guests</label>
-                        <input type="number" class="form-control" id="restaurantGuests" min="1" max="10" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="restaurantSpecialRequests" class="form-label">Special Requests</label>
-                        <textarea class="form-control" id="restaurantSpecialRequests" rows="3"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-maroon" onclick="submitRestaurantBooking()">Submit Booking</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="spaModal" tabindex="-1" aria-labelledby="spaModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="spaModalLabel">Book Spa Treatment</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="spaForm">
-                    <div class="mb-3">
-                        <label for="spaDate" class="form-label">Date</label>
-                        <input type="date" class="form-control" id="spaDate" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="spaTime" class="form-label">Time</label>
-                        <input type="time" class="form-control" id="spaTime" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="spaTreatment" class="form-label">Treatment Type</label>
-                        <select class="form-select" id="spaTreatment" required>
-                            <option value="massage">Swedish Massage</option>
-                            <option value="facial">Facial Treatment</option>
-                            <option value="body">Body Treatment</option>
-                            <option value="package">Spa Package</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="spaDuration" class="form-label">Duration</label>
-                        <select class="form-select" id="spaDuration" required>
-                            <option value="30">30 minutes</option>
-                            <option value="60">60 minutes</option>
-                            <option value="90">90 minutes</option>
-                            <option value="120">120 minutes</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="spaSpecialRequests" class="form-label">Special Requests</label>
-                        <textarea class="form-control" id="spaSpecialRequests" rows="3"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-maroon" onclick="submitSpaBooking()">Book Treatment</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="roomServiceModal" tabindex="-1" aria-labelledby="roomServiceModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="roomServiceModalLabel">Room Service Menu</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h6>Breakfast</h6>
-                        <ul class="list-unstyled">
-                            <li>Continental Breakfast - $15</li>
-                            <li>Full English Breakfast - $20</li>
-                            <li>Pancakes with Maple Syrup - $12</li>
-                            <li>Fresh Fruit Platter - $10</li>
-                        </ul>
-                    </div>
-                    <div class="col-md-6">
-                        <h6>Lunch & Dinner</h6>
-                        <ul class="list-unstyled">
-                            <li>Club Sandwich - $14</li>
-                            <li>Caesar Salad - $12</li>
-                            <li>Grilled Salmon - $25</li>
-                            <li>Beef Tenderloin - $28</li>
-                        </ul>
+<h4 class="section-title mb-3"><i class="fas fa-concierge-bell me-2"></i>Available Services</h4>
+<div class="section-bg p-4 rounded-4">
+    <div class="row">
+        @if (Model.Services != null && Model.Services.Any())
+        {
+            var displayedServices = Model.Services.Take(2).ToList();
+            foreach (var service in displayedServices)
+            {
+                <div class="col-md-6 mb-4">
+                    <div class="service-card enhanced-card h-100 animate-fade-in service-card-overlay">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="@service.IconClass fa-2x me-3 text-gradient"></i>
+                            <h5 class="fw-semibold mb-0">@service.Name</h5>
+                        </div>
+                        <p class="small text-muted mb-3">@service.Description</p>
+                        <a href="@Url.Action("Services", "Home")" class="btn btn-maroon w-100 py-2"><i class="fas fa-arrow-right me-1"></i>Book Now</a>
                     </div>
                 </div>
-                <div class="alert alert-info mt-3">
-                    <i class="fas fa-phone"></i> To place an order, please call extension 1234
+            }
+            if (Model.Services.Count > 2)
+            {
+                <div class="col-12 text-center mt-2">
+                    <a href="@Url.Action("Services", "Home")" class="btn btn-outline-maroon see-more-btn"><i class="fas fa-arrow-right me-1"></i>See More</a>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i> No services are currently available.
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
+        }
     </div>
 </div>
 
 @section Styles {
     <style>
-        .profile-section {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-            color: white;
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-            position: relative;
-            overflow: hidden;
+        :root {
+            --primary-color: #8B1C1C;
+            --primary-dark: #5A1010;
+            --accent: #F7C873;
+            --bg-light: #f8f9fa;
+            --bg-gradient: linear-gradient(135deg, #fff 60%, #f8f9fa 100%);
         }
-
-        .profile-section::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200px;
-            height: 200px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
+        .enhanced-profile-maroon {
+            border: none;
+            box-shadow: 0 8px 32px rgba(139,28,28,0.10);
+            background: var(--primary-color) !important;
+            padding: 2.5rem 2rem 2rem 2rem;
+            margin-bottom: 2rem;
+            border-radius: 24px;
         }
-
-        .user-avatar-large {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background-color: white;
-            color: var(--primary-color);
+        .enhanced-avatar-maroon {
+            background: none !important;
+            border: none;
+            box-shadow: none;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 10px auto;
+            padding: 0;
         }
-
-        .user-avatar-large:hover {
-            transform: scale(1.1);
-        }
-
-        .dashboard-card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-        }
-
-        .dashboard-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-        }
-
-        .dashboard-card i {
-            font-size: 2.5rem;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .reservation-status {
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        .status-confirmed {
-            background-color: #d4edda;
-            color: #155724;
-        }
-
-        .status-pending {
-            background-color: #fff3cd;
-            color: #856404;
-        }
-
-        .status-cancelled {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-
-        .service-card {
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            transition: all 0.3s;
-            background: white;
-        }
-
-        .service-card:hover {
-            border-color: var(--primary-color);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            transform: translateY(-5px);
-        }
-
-        .service-card i {
+        .user-name-maroon {
+            color: #fff;
             font-size: 2rem;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            letter-spacing: 0.5px;
         }
-
-        .btn-maroon {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            transition: all 0.3s;
+        .user-meta-maroon {
+            color: #f8f9fa;
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
         }
-
-        .btn-maroon:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-2px);
+        .reservation-accent-bar-maroon {
+            padding-left: 1.5rem !important;
         }
-
-        .btn-outline-maroon {
-            border: 1px solid var(--primary-color);
-            color: var(--primary-color);
-            background: transparent;
-            padding: 8px 15px;
-            border-radius: 8px;
-            transition: all 0.3s;
+        .reservation-accent-maroon {
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 8px;
+            border-radius: 20px 0 0 20px;
+            background: var(--primary-color);
+            box-shadow: 2px 0 8px rgba(139,28,28,0.10);
         }
-
-        .btn-outline-maroon:hover {
-            background-color: var(--primary-color);
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        .badge {
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-weight: 500;
-        }
-
-        .section-title {
-            color: var(--primary-color);
+        .badge-status-maroon {
+            font-size: 0.95rem;
             font-weight: 600;
-            margin-bottom: 25px;
-            position: relative;
-            padding-bottom: 10px;
+            padding: 7px 18px;
+            border-radius: 16px;
+            background: var(--primary-color);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(139,28,28,0.10);
+            border: none;
+            letter-spacing: 0.5px;
         }
-
-        .section-title::after {
+        .text-maroon {
+            color: var(--primary-color) !important;
+        }
+        .section-bg {
+            background: #fff;
+            box-shadow: 0 2px 16px rgba(139,28,28,0.07);
+            margin-bottom: 2rem;
+        }
+        .section-divider {
+            border: none;
+            border-top: 2px solid var(--primary-color);
+            opacity: 0.15;
+        }
+        .enhanced-card {
+            border-radius: 20px;
+            box-shadow: 0 4px 24px rgba(139,28,28,0.10);
+            border: 1px solid #ececec;
+            transition: transform 0.2s, box-shadow 0.2s;
+            background: #fff;
+            padding: 2rem 1.5rem 1.5rem 1.5rem;
+            position: relative;
+        }
+        .enhanced-card:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 8px 32px rgba(139,28,28,0.18);
+        }
+        .service-card-overlay::before {
             content: '';
             position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 50px;
-            height: 3px;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-            border-radius: 3px;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(120deg, var(--accent) 0%, transparent 100%);
+            opacity: 0.08;
+            border-radius: 20px;
+            z-index: 0;
         }
+        .service-card-overlay > * { position: relative; z-index: 1; }
+        .see-more-btn {
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            padding: 10px 32px;
+            border-radius: 24px;
+            font-size: 1.1rem;
+        }
+        .btn-maroon {
+            background: var(--primary-color);
+            color: #fff;
+            border: none;
+            border-radius: 18px;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(139,28,28,0.10);
+            transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+        }
+        .btn-maroon:hover {
+            background: var(--primary-dark);
+            color: #fff;
+            transform: translateY(-2px) scale(1.04);
+            box-shadow: 0 4px 16px rgba(139,28,28,0.15);
+        }
+        .btn-outline-maroon {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            background: transparent;
+            border-radius: 18px;
+            font-weight: 600;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+        }
+        .btn-outline-maroon:hover {
+            background: var(--primary-color);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(139,28,28,0.10);
+        }
+        .text-gradient {
+            background: linear-gradient(90deg, var(--primary-color), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.7s cubic-bezier(.39,.575,.565,1.000) both;
+        }
+        @@keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: none; }
+        }
+        .enhanced-modal .modal-content {
+            border-radius: 18px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+        }
+        .section-title i {
+            color: var(--primary-color);
+        }
+        .fw-bold { font-weight: bold; }
+        .fw-semibold { font-weight: 600; }
+        .mb-4 { margin-bottom: 1.5rem !important; }
+        .mb-3 { margin-bottom: 1rem !important; }
+        .py-2 { padding-top: 0.5rem !important; padding-bottom: 0.5rem !important; }
+        .w-100 { width: 100% !important; }
     </style>
+}
+
+@section Scripts {
+    <script>
+        function cancelReservation(reservationId) {
+            if (confirm('Are you sure you want to cancel this reservation?')) {
+                $.post('/Reservations/Cancel', { id: reservationId })
+                    .done(function(response) {
+                        if (response.success) {
+                            location.reload();
+                        } else {
+                            alert('Failed to cancel reservation: ' + response.message);
+                        }
+                    })
+                    .fail(function() {
+                        alert('An error occurred while canceling the reservation.');
+                    });
+            }
+        }
+
+        function submitServiceBooking(serviceId) {
+            const form = $(`#serviceForm-${serviceId}`);
+            if (!form[0].checkValidity()) {
+                form[0].reportValidity();
+                return;
+            }
+
+            const bookingData = {
+                serviceId: serviceId,
+                date: $(`#serviceDate-${serviceId}`).val(),
+                time: $(`#serviceTime-${serviceId}`).val(),
+                option: $(`#serviceOption-${serviceId}`).val(),
+                specialRequests: $(`#serviceSpecialRequests-${serviceId}`).val()
+            };
+
+            $.post('/Services/Book', bookingData)
+                .done(function(response) {
+                    if (response.success) {
+                        alert('Booking submitted successfully!');
+                        $(`#serviceModal-${serviceId}`).modal('hide');
+                        form[0].reset();
+                    } else {
+                        alert('Failed to submit booking: ' + response.message);
+                    }
+                })
+                .fail(function() {
+                    alert('An error occurred while submitting the booking.');
+                });
+        }
+
+        // Initialize date inputs with minimum date as today
+        $(document).ready(function() {
+            const today = new Date().toISOString().split('T')[0];
+            $('input[type="date"]').attr('min', today);
+        });
+    </script>
 }

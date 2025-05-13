@@ -19,6 +19,17 @@ namespace WebApplication1.Models
         public int UpcomingStays { get; set; }
         public int PastStays { get; set; }
 
+        // Add missing properties for views
+        public string ProfileImageUrl { get; set; }
+        public string MembershipLevel { get; set; }
+        public int LoyaltyPoints { get; set; }
+        public string PreferredLanguage { get; set; }
+        public bool EmailNotifications { get; set; }
+        public bool SmsNotifications { get; set; }
+
+        // Add missing property for views
+        public DateTime? JoinDate { get; set; }
+
         public static ProfileViewModel FromUser(User user)
         {
             return new ProfileViewModel
@@ -30,10 +41,19 @@ namespace WebApplication1.Models
                 Username = user.Username,
                 Email = user.Email,
                 Role = user.Role,
-                // Initialize additional properties with default values
+                PhoneNumber = user.PhoneNumber,
+                Address = user.Address,
+                ProfileImageUrl = user.ProfileImageUrl,
+                PreferredLanguage = user.PreferredLanguage,
+                EmailNotifications = user.EmailNotifications,
+                SmsNotifications = user.SmsNotifications,
+                // Set these as needed, or fetch from DB if available
                 TotalStays = 0,
                 UpcomingStays = 0,
-                PastStays = 0
+                PastStays = 0,
+                MembershipLevel = null,
+                LoyaltyPoints = 0,
+                JoinDate = null
             };
         }
     }

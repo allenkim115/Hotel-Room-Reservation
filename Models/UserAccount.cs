@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
+using WebApplication1.Models;
 
-namespace Hotel_Room_Reservation.Models
+namespace WebApplication1.Models
 {
     public class UserAccount
     {

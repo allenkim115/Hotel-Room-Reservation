@@ -1,213 +1,359 @@
+@model WebApplication1.Models.BaseViewModel
 @{
     Layout = "_DashboardLayout";
     ViewData["Title"] = "Room Types";
 }
 
-<h1 class="page-title">Hotel Rooms</h1>
-<div class="row">
-    <!-- Standard Room -->
-    <div class="col-md-4">
-        <div class="room-card">
-            <img src="~/images/standard.png" alt="Standard Room" class="room-image">
-            <div class="room-details">
-                <h3 class="room-title">Standard Room</h3>
-                <p class="room-price">$150/night</p>
-                <ul class="room-features">
-                    <li><i class="fas fa-bed"></i> 1 Queen Bed</li>
-                    <li><i class="fas fa-user"></i> 2 Guests</li>
-                    <li><i class="fas fa-tv"></i> 32" TV</li>
-                    <li><i class="fas fa-wifi"></i> Free WiFi</li>
-                    <li><i class="fas fa-coffee"></i> Coffee Maker</li>
-                </ul>
-                <a href="#" class="btn btn-book" data-bs-toggle="modal" data-bs-target="#bookNowModal">Book Now</a>
+<div class="room-types-container">
+    <div class="row">
+        @foreach (var roomType in Model.RoomTypes)
+        {
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="room-card">
+                    <div class="room-image">
+                        <img src="@roomType.ImageUrl" alt="@roomType.Name" class="img-fluid">
+                        <div class="room-price">
+                            <span class="price">$@roomType.PricePerNight</span>
+                            <span class="per-night">per night</span>
+                        </div>
+                    </div>
+                    <div class="room-details">
+                        <h3 class="room-name">@roomType.Name</h3>
+                        <div class="room-features">
+                            <span><i class="fas fa-bed"></i> @roomType.BedType</span>
+                            <span><i class="fas fa-users"></i> Up to @roomType.MaxOccupancy guests</span>
+                            <span><i class="fas fa-ruler-combined"></i> @roomType.Size sqm</span>
+                        </div>
+                        <p class="room-description">@roomType.Description</p>
+                        <div class="room-amenities">
+                            @foreach (var amenity in roomType.Amenities)
+                            {
+                                <span class="amenity"><i class="@amenity.Icon"></i> @amenity.Name</span>
+                            }
+                        </div>
+                        <button class="btn btn-maroon btn-block" onclick="showBookingModal(@roomType.Id)">
+                            Book Now
+                        </button>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Deluxe Room -->
-    <div class="col-md-4">
-        <div class="room-card">
-            <img src="~/images/room.png" alt="Deluxe Room" class="room-image">
-            <div class="room-details">
-                <h3 class="room-title">Deluxe Room</h3>
-                <p class="room-price">$250/night</p>
-                <ul class="room-features">
-                    <li><i class="fas fa-bed"></i> 1 King Bed</li>
-                    <li><i class="fas fa-user"></i> 2 Guests</li>
-                    <li><i class="fas fa-tv"></i> 42" TV</li>
-                    <li><i class="fas fa-wifi"></i> Free WiFi</li>
-                    <li><i class="fas fa-coffee"></i> Coffee Maker</li>
-                    <li><i class="fas fa-bath"></i> Jacuzzi</li>
-                </ul>
-                <a href="#" class="btn btn-book" data-bs-toggle="modal" data-bs-target="#bookNowModal">Book Now</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Suite -->
-    <div class="col-md-4">
-        <div class="room-card">
-            <img src="~/images/suite.png" alt="Suite" class="room-image">
-            <div class="room-details">
-                <h3 class="room-title">Suite</h3>
-                <p class="room-price">$350/night</p>
-                <ul class="room-features">
-                    <li><i class="fas fa-bed"></i> 1 King Bed + Sofa Bed</li>
-                    <li><i class="fas fa-user"></i> 4 Guests</li>
-                    <li><i class="fas fa-tv"></i> 55" TV</li>
-                    <li><i class="fas fa-wifi"></i> Free WiFi</li>
-                    <li><i class="fas fa-coffee"></i> Coffee Maker</li>
-                    <li><i class="fas fa-bath"></i> Jacuzzi</li>
-                    <li><i class="fas fa-utensils"></i> Kitchenette</li>
-                </ul>
-                <a href="#" class="btn btn-book" data-bs-toggle="modal" data-bs-target="#bookNowModal">Book Now</a>
-            </div>
-        </div>
+        }
     </div>
 </div>
 
-<div class="modal fade" id="bookNowModal" tabindex="-1" aria-labelledby="bookNowModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<!-- Booking Modal -->
+<div class="modal fade" id="bookingModal" tabindex="-1" role="dialog" aria-labelledby="bookingModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="bookNowModalLabel">Book Now</h5>
+                <h5 class="modal-title" id="bookingModalLabel">Book Your Stay</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
-                    <div class="mb-3">
-                        <label for="checkInDate" class="form-label">Check-In Date</label>
-                        <input type="date" class="form-control" id="checkInDate">
+                <form id="bookingForm">
+                    <input type="hidden" id="roomTypeId" name="RoomTypeId">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="checkIn">Check-in Date</label>
+                                <input type="date" class="form-control" id="checkIn" name="CheckInDate" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="checkOut">Check-out Date</label>
+                                <input type="date" class="form-control" id="checkOut" name="CheckOutDate" required>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="checkOutDate" class="form-label">Check-Out Date</label>
-                        <input type="date" class="form-control" id="checkOutDate">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="guests">Number of Guests</label>
+                                <input type="number" class="form-control" id="guests" name="NumberOfGuests" min="1" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="specialRequests">Special Requests</label>
+                                <textarea class="form-control" id="specialRequests" name="SpecialRequests" rows="3"></textarea>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="guests" class="form-label">Number of Guests</label>
-                        <input type="number" class="form-control" id="guests" min="1">
+                    <div class="booking-summary">
+                        <h4>Booking Summary</h4>
+                        <div class="summary-details">
+                            <div class="summary-item">
+                                <span>Room Type:</span>
+                                <span id="summaryRoomType"></span>
+                            </div>
+                            <div class="summary-item">
+                                <span>Duration:</span>
+                                <span id="summaryDuration"></span>
+                            </div>
+                            <div class="summary-item">
+                                <span>Total Price:</span>
+                                <span id="summaryTotal"></span>
+                            </div>
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-book">Confirm Booking</button>
                 </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-maroon" onclick="submitBooking()">Confirm Booking</button>
             </div>
         </div>
     </div>
 </div>
 
+@section Scripts {
+    <script>
+        const roomTypes = @Html.Raw(Json.Serialize(Model.RoomTypes));
+        let isSubmitting = false;
+
+        function showBookingModal(roomTypeId) {
+            roomTypeId = Number(roomTypeId);
+            console.log('showBookingModal called with:', roomTypeId, roomTypes);
+            const roomType = roomTypes.find(r => r.id === roomTypeId);
+            if (!roomType) {
+                alert('Invalid room type selected.');
+                return;
+            }
+
+            $('#roomTypeId').val(roomTypeId);
+            $('#summaryRoomType').text(roomType.Name);
+            // Set min date to today
+            const today = new Date().toISOString().split('T')[0];
+            $('#checkIn').attr('min', today);
+            $('#checkOut').attr('min', today);
+            // Set max guests
+            $('#guests').attr('max', roomType.MaxOccupancy);
+            $('#guests').attr('placeholder', `Max ${roomType.MaxOccupancy} guests`);
+            // Reset form
+            $('#bookingForm')[0].reset();
+            // Use Bootstrap 5 modal API
+            var bookingModal = new bootstrap.Modal(document.getElementById('bookingModal'));
+            bookingModal.show();
+        }
+
+        function validateDates() {
+            const checkIn = new Date($('#checkIn').val());
+            const checkOut = new Date($('#checkOut').val());
+            
+            if (checkIn >= checkOut) {
+                alert('Check-out date must be after check-in date');
+                return false;
+            }
+            
+            // Prevent same-day bookings
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            if (checkIn <= today) {
+                alert('Check-in date must be after today');
+                return false;
+            }
+            
+            return true;
+        }
+
+        function validateGuests() {
+            const guests = parseInt($('#guests').val());
+            const roomTypeId = Number($('#roomTypeId').val());
+            const roomType = roomTypes.find(r => r.id === roomTypeId);
+            
+            if (guests < 1) {
+                alert('Number of guests must be at least 1');
+                return false;
+            }
+            
+            if (guests > roomType.MaxOccupancy) {
+                alert(`Maximum occupancy for this room is ${roomType.MaxOccupancy} guests`);
+                return false;
+            }
+            
+            return true;
+        }
+
+        function updateBookingSummary() {
+            const checkInVal = $('#checkIn').val();
+            const checkOutVal = $('#checkOut').val();
+            if (!checkInVal || !checkOutVal) {
+                $('#summaryDuration').text('');
+                $('#summaryTotal').text('');
+                return;
+            }
+
+            const checkIn = new Date(checkInVal);
+            const checkOut = new Date(checkOutVal);
+            const roomTypeId = Number($('#roomTypeId').val());
+            const roomType = roomTypes.find(r => r.id === roomTypeId);
+
+            if (checkIn && checkOut && roomType) {
+                const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
+                if (nights > 0 && !isNaN(roomType.PricePerNight)) {
+                    const total = nights * roomType.PricePerNight;
+                    $('#summaryDuration').text(`${nights} nights`);
+                    $('#summaryTotal').text(`$${total.toFixed(2)}`);
+                } else {
+                    $('#summaryDuration').text('');
+                    $('#summaryTotal').text('');
+                }
+            }
+        }
+
+        $('#checkIn, #checkOut').on('change', updateBookingSummary);
+        $('#guests').on('change', validateGuests);
+
+        function submitBooking() {
+            if (isSubmitting) return;
+            
+            if (!validateDates() || !validateGuests()) {
+                return;
+            }
+
+            isSubmitting = true;
+            const submitButton = $('button[onclick="submitBooking()"]');
+            const originalText = submitButton.text();
+            submitButton.prop('disabled', true).text('Processing...');
+
+            const formData = $('#bookingForm').serialize();
+            $.post('/Reservations/Create', formData)
+                .done(function(response) {
+                    if (response.success) {
+                        alert('Booking confirmed successfully!');
+                        window.location.href = '/Home/Reservations';
+                    } else {
+                        alert('Failed to create booking: ' + response.message);
+                    }
+                })
+                .fail(function(xhr) {
+                    alert('An error occurred while creating the booking: ' + 
+                          (xhr.responseJSON?.message || 'Please try again later.'));
+                })
+                .always(function() {
+                    isSubmitting = false;
+                    submitButton.prop('disabled', false).text(originalText);
+                });
+        }
+    </script>
+}
+
 @section Styles {
     <style>
-        .page-title {
-            color: var(--primary-color);
-            font-weight: bold;
-            margin-bottom: 30px;
-            font-size: 2rem;
-            text-align: center;
+        .room-types-container {
+            padding: 2rem 0;
         }
 
         .room-card {
-            background: white;
-            border-radius: 15px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s;
-            margin-bottom: 30px;
-            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
         }
 
         .room-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
         }
 
         .room-image {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .room-image img {
             width: 100%;
-            height: 250px;
+            height: 100%;
             object-fit: cover;
-            transition: transform 0.3s;
-        }
-
-        .room-card:hover .room-image {
-            transform: scale(1.05);
-        }
-
-        .room-details {
-            padding: 25px;
-        }
-
-        .room-title {
-            color: var(--primary-color);
-            font-weight: bold;
-            margin-bottom: 15px;
-            font-size: 1.5rem;
         }
 
         .room-price {
-            font-size: 1.3rem;
-            color: var(--primary-color);
-            font-weight: bold;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .room-features {
-            list-style: none;
-            padding: 0;
-            margin-bottom: 25px;
-        }
-
-        .room-features li {
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            color: var(--text-light);
-        }
-
-        .room-features i {
-            color: var(--primary-color);
-            margin-right: 12px;
-            font-size: 1.1rem;
-        }
-
-        .btn-book {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: var(--primary-color);
             color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            border-top-left-radius: 10px;
+        }
+
+        .room-price .price {
+            font-size: 1.5rem;
             font-weight: bold;
-            transition: all 0.3s;
-            width: 100%;
         }
 
-        .btn-book:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(139, 28, 28, 0.3);
-            color: white;
-        }
-
-        .row {
-            display: flex;
-            flex-wrap: wrap;
-        }
-
-        .col-md-4 {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .room-card {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
+        .room-price .per-night {
+            font-size: 0.8rem;
+            opacity: 0.8;
         }
 
         .room-details {
-            flex-grow: 1;
+            padding: 1.5rem;
+        }
+
+        .room-name {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .room-features {
             display: flex;
-            flex-direction: column;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .room-features span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #666;
+        }
+
+        .room-description {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .room-amenities {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .amenity {
+            background: #f8f9fa;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .booking-summary {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+        }
+
+        .summary-details {
+            margin-top: 1rem;
+        }
+
+        .summary-item {
+            display: flex;
             justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-item:last-child {
+            margin-bottom: 0;
+            font-weight: bold;
+            color: var(--primary-color);
         }
     </style>
 }

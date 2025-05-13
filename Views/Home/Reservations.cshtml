@@ -1,3 +1,4 @@
+@model WebApplication1.Models.BaseViewModel
 @{
     Layout = "_DashboardLayout";
     ViewData["Title"] = "My Reservations";
@@ -10,38 +11,108 @@
     <div class="section-container">
         <h2 class="section-title">Active Reservations</h2>
         <div class="row">
-            <div class="col-md-6">
-                <div class="dashboard-card">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h5 class="mb-0">Deluxe Suite</h5>
-                        <span class="reservation-status status-confirmed">Confirmed</span>
-                    </div>
-                    <p class="text-muted mb-2">May 15 - May 20, 2023</p>
-                    <div class="d-flex justify-content-between">
-                        <div><i class="fas fa-user me-1"></i> 2 Adults</div>
-                        <div class="d-flex gap-2">
-                            <a href="#" class="btn btn-outline-maroon" data-bs-toggle="modal" data-bs-target="#viewDetailsModal">View Details</a>
-                            <a href="#" class="btn btn-maroon" data-bs-toggle="modal" data-bs-target="#modifyReservationModal">Modify</a>
+            @foreach (var reservation in Model.ActiveReservations)
+            {
+                <div class="col-md-6">
+                    <div class="dashboard-card">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5 class="mb-0">
+                                @reservation.RoomType
+                                @if (reservation.Status == "Service")
+                                {
+                                    <span class="badge bg-info ms-2">Service</span>
+                                }
+                            </h5>
+                            <span class="reservation-status status-@reservation.Status.ToLower()">@reservation.Status</span>
+                        </div>
+                        <p class="text-muted mb-2">@reservation.CheckInDate.ToString("MMM dd") - @reservation.CheckOutDate.ToString("MMM dd, yyyy")</p>
+                        <div class="d-flex justify-content-between">
+                            <div><i class="fas fa-user me-1"></i> @reservation.NumberOfGuests @(reservation.NumberOfGuests == 1 ? "Adult" : "Adults")</div>
+                            <div class="d-flex gap-2">
+                                <a href="#" class="btn btn-outline-maroon" data-bs-toggle="modal" data-bs-target="#viewDetailsModal-@reservation.Id">View Details</a>
+                                @if (reservation.Status == "Pending" || reservation.Status == "Service")
+                                {
+                                    <a href="#" class="btn btn-maroon" data-bs-toggle="modal" data-bs-target="#modifyReservationModal-@reservation.Id">Modify</a>
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="dashboard-card">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h5 class="mb-0">Executive Room</h5>
-                        <span class="reservation-status status-pending">Pending</span>
-                    </div>
-                    <p class="text-muted mb-2">June 1 - June 5, 2023</p>
-                    <div class="d-flex justify-content-between">
-                        <div><i class="fas fa-user me-1"></i> 1 Adult</div>
-                        <div class="d-flex gap-2">
-                            <a href="#" class="btn btn-outline-maroon" data-bs-toggle="modal" data-bs-target="#viewDetailsModal">View Details</a>
-                            <a href="#" class="btn btn-maroon" data-bs-toggle="modal" data-bs-target="#modifyReservationModal">Modify</a>
+
+                <!-- View Details Modal -->
+                <div class="modal fade" id="viewDetailsModal-@reservation.Id" tabindex="-1" aria-labelledby="viewDetailsModalLabel-@reservation.Id" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="viewDetailsModalLabel-@reservation.Id">Reservation Details</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p><strong>Room:</strong> @reservation.RoomType
+                                    @if (reservation.Status == "Service")
+                                    {
+                                        <span class="badge bg-info ms-2">Service</span>
+                                    }
+                                </p>
+                                <p><strong>Dates:</strong> @reservation.CheckInDate.ToString("MMM dd") - @reservation.CheckOutDate.ToString("MMM dd, yyyy")</p>
+                                <p><strong>Guests:</strong> @reservation.NumberOfGuests @(reservation.NumberOfGuests == 1 ? "Adult" : "Adults")</p>
+                                <p><strong>Total:</strong> $@reservation.TotalAmount.ToString("N2")</p>
+                                <p><strong>Status:</strong> <span class="badge bg-@(reservation.Status == "Confirmed" ? "success" : "warning")">@reservation.Status</span></p>
+                                @if (!string.IsNullOrEmpty(reservation.SpecialRequests))
+                                {
+                                    <p><strong>Special Requests:</strong> @reservation.SpecialRequests</p>
+                                }
+                            </div>
+                            <div class="modal-footer">
+                                @if (reservation.Status == "Pending" || reservation.Status == "Service")
+                                {
+                                    <button type="button" class="btn btn-danger" onclick="cancelReservation(@reservation.Id)">Cancel Reservation</button>
+                                }
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+
+                <!-- Modify Reservation Modal -->
+                @if (reservation.Status == "Pending" || reservation.Status == "Service")
+                {
+                    <div class="modal fade" id="modifyReservationModal-@reservation.Id" tabindex="-1" aria-labelledby="modifyReservationModalLabel-@reservation.Id" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="modifyReservationModalLabel-@reservation.Id">Modify Reservation</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="modifyForm-@reservation.Id">
+                                        <div class="mb-3">
+                                            <label for="checkInDate-@reservation.Id" class="form-label">Check-in Date</label>
+                                            <input type="date" class="form-control" id="checkInDate-@reservation.Id" value="@reservation.CheckInDate.ToString("yyyy-MM-dd")" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="checkOutDate-@reservation.Id" class="form-label">Check-out Date</label>
+                                            <input type="date" class="form-control" id="checkOutDate-@reservation.Id" value="@reservation.CheckOutDate.ToString("yyyy-MM-dd")" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="guests-@reservation.Id" class="form-label">Number of Guests</label>
+                                            <input type="number" class="form-control" id="guests-@reservation.Id" value="@reservation.NumberOfGuests" min="1" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="specialRequests-@reservation.Id" class="form-label">Special Requests</label>
+                                            <textarea class="form-control" id="specialRequests-@reservation.Id" rows="3">@reservation.SpecialRequests</textarea>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-maroon" onclick="modifyReservation(@reservation.Id)">Save Changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
         </div>
     </div>
 
@@ -49,202 +120,178 @@
     <div class="section-container">
         <h2 class="section-title">Past Reservations</h2>
         <div class="row">
-            <div class="col-md-6">
-                <div class="dashboard-card">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h5 class="mb-0">Standard Room</h5>
-                        <span class="reservation-status status-completed">Completed</span>
-                    </div>
-                    <p class="text-muted mb-2">March 10 - March 15, 2023</p>
-                    <div class="d-flex justify-content-between">
-                        <div><i class="fas fa-user me-1"></i> 2 Adults</div>
-                        <div class="d-flex gap-2">
-                            <a href="#" class="btn btn-outline-maroon" data-bs-toggle="modal" data-bs-target="#viewDetailsPastModal1">View Details</a>
-                            <a href="#" class="btn btn-maroon" data-bs-toggle="modal" data-bs-target="#bookAgainModal1">Book Again</a>
+            @foreach (var reservation in Model.PastReservations)
+            {
+                <div class="col-md-6">
+                    <div class="dashboard-card">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5 class="mb-0">
+                                @reservation.RoomType
+                                @if (reservation.Status == "Service")
+                                {
+                                    <span class="badge bg-info ms-2">Service</span>
+                                }
+                            </h5>
+                            <span class="reservation-status status-completed">Completed</span>
+                        </div>
+                        <p class="text-muted mb-2">@reservation.CheckInDate.ToString("MMM dd") - @reservation.CheckOutDate.ToString("MMM dd, yyyy")</p>
+                        <div class="d-flex justify-content-between">
+                            <div><i class="fas fa-user me-1"></i> @reservation.NumberOfGuests @(reservation.NumberOfGuests == 1 ? "Adult" : "Adults")</div>
+                            <div class="d-flex gap-2">
+                                <a href="#" class="btn btn-outline-maroon" data-bs-toggle="modal" data-bs-target="#viewDetailsPastModal-@reservation.Id">View Details</a>
+                                <a href="#" class="btn btn-maroon" data-bs-toggle="modal" data-bs-target="#bookAgainModal-@reservation.Id">Book Again</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="dashboard-card">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h5 class="mb-0">Deluxe Suite</h5>
-                        <span class="reservation-status status-completed">Completed</span>
-                    </div>
-                    <p class="text-muted mb-2">February 5 - February 10, 2023</p>
-                    <div class="d-flex justify-content-between">
-                        <div><i class="fas fa-user me-1"></i> 1 Adult</div>
-                        <div class="d-flex gap-2">
-                            <a href="#" class="btn btn-outline-maroon" data-bs-toggle="modal" data-bs-target="#viewDetailsPastModal2">View Details</a>
-                            <a href="#" class="btn btn-maroon" data-bs-toggle="modal" data-bs-target="#bookAgainModal2">Book Again</a>
+
+                <!-- View Details Modal for Past Reservation -->
+                <div class="modal fade" id="viewDetailsPastModal-@reservation.Id" tabindex="-1" aria-labelledby="viewDetailsPastModalLabel-@reservation.Id" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="viewDetailsPastModalLabel-@reservation.Id">Reservation Details</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p><strong>Room:</strong> @reservation.RoomType
+                                    @if (reservation.Status == "Service")
+                                    {
+                                        <span class="badge bg-info ms-2">Service</span>
+                                    }
+                                </p>
+                                <p><strong>Dates:</strong> @reservation.CheckInDate.ToString("MMM dd") - @reservation.CheckOutDate.ToString("MMM dd, yyyy")</p>
+                                <p><strong>Guests:</strong> @reservation.NumberOfGuests @(reservation.NumberOfGuests == 1 ? "Adult" : "Adults")</p>
+                                <p><strong>Total:</strong> $@reservation.TotalAmount.ToString("N2")</p>
+                                @if (!string.IsNullOrEmpty(reservation.SpecialRequests))
+                                {
+                                    <p><strong>Special Requests:</strong> @reservation.SpecialRequests</p>
+                                }
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+
+                <!-- Book Again Modal -->
+                <div class="modal fade" id="bookAgainModal-@reservation.Id" tabindex="-1" aria-labelledby="bookAgainModalLabel-@reservation.Id" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="bookAgainModalLabel-@reservation.Id">Book Again</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Would you like to book the <strong>@reservation.RoomType</strong> again?</p>
+                                <form id="bookAgainForm-@reservation.Id">
+                                    <div class="mb-3">
+                                        <label for="checkinDate-@reservation.Id" class="form-label">Check-in Date</label>
+                                        <input type="date" class="form-control" id="checkinDate-@reservation.Id" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="checkoutDate-@reservation.Id" class="form-label">Check-out Date</label>
+                                        <input type="date" class="form-control" id="checkoutDate-@reservation.Id" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="guests-@reservation.Id" class="form-label">Number of Guests</label>
+                                        <input type="number" class="form-control" id="guests-@reservation.Id" value="@reservation.NumberOfGuests" min="1" required>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-maroon" onclick="bookAgain(@reservation.Id)">Confirm Booking</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
     </div>
 </div>
 
-<!-- View Details Modal -->
-<div class="modal fade" id="viewDetailsModal" tabindex="-1" aria-labelledby="viewDetailsModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="viewDetailsModalLabel">Reservation Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p><strong>Room:</strong> Deluxe Suite</p>
-                <p><strong>Dates:</strong> May 15 - May 20, 2023</p>
-                <p><strong>Guests:</strong> 2 Adults</p>
-                <p><strong>Total:</strong> $1,250</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
+@section Scripts {
+    <script>
+        function cancelReservation(reservationId) {
+            if (confirm('Are you sure you want to cancel this reservation?')) {
+                $.post('/Reservations/Cancel', { id: reservationId })
+                    .done(function(response) {
+                        if (response.success) {
+                            location.reload();
+                        } else {
+                            alert('Failed to cancel reservation: ' + response.message);
+                        }
+                    })
+                    .fail(function() {
+                        alert('An error occurred while canceling the reservation.');
+                    });
+            }
+        }
 
-<!-- Modify Reservation Modal -->
-<div class="modal fade" id="modifyReservationModal" tabindex="-1" aria-labelledby="modifyReservationModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modifyReservationModalLabel">Modify Reservation</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="mb-3">
-                        <label for="modifyDates" class="form-label">Dates</label>
-                        <input type="text" class="form-control" id="modifyDates" placeholder="May 15 - May 20, 2023">
-                    </div>
-                    <div class="mb-3">
-                        <label for="modifyGuests" class="form-label">Guests</label>
-                        <input type="number" class="form-control" id="modifyGuests" placeholder="2">
-                    </div>
-                    <div class="mb-3">
-                        <label for="modifyTotal" class="form-label">Total</label>
-                        <input type="text" class="form-control" id="modifyTotal" placeholder="$1,250">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-maroon">Save Changes</button>
-            </div>
-        </div>
-    </div>
-</div>
+        function modifyReservation(reservationId) {
+            const form = $(`#modifyForm-${reservationId}`);
+            if (!form[0].checkValidity()) {
+                form[0].reportValidity();
+                return;
+            }
 
-<!-- View Details Modal for Standard Room -->
-<div class="modal fade" id="viewDetailsPastModal1" tabindex="-1" aria-labelledby="viewDetailsPastModalLabel1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="viewDetailsPastModalLabel1">Reservation Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p><strong>Room:</strong> Standard Room</p>
-                <p><strong>Dates:</strong> March 10 - March 15, 2023</p>
-                <p><strong>Guests:</strong> 2 Adults</p>
-                <p><strong>Total:</strong> $750</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
+            const data = {
+                id: reservationId,
+                checkInDate: $(`#checkInDate-${reservationId}`).val(),
+                checkOutDate: $(`#checkOutDate-${reservationId}`).val(),
+                numberOfGuests: $(`#guests-${reservationId}`).val(),
+                specialRequests: $(`#specialRequests-${reservationId}`).val()
+            };
 
-<!-- Book Again Modal for Standard Room -->
-<div class="modal fade" id="bookAgainModal1" tabindex="-1" aria-labelledby="bookAgainModalLabel1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="bookAgainModalLabel1">Book Again</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Would you like to book the <strong>Standard Room</strong> again?</p>
-                <form>
-                    <div class="mb-3">
-                        <label for="checkinDate1" class="form-label">Check-in Date</label>
-                        <input type="date" class="form-control" id="checkinDate1" value="2023-03-10">
-                    </div>
-                    <div class="mb-3">
-                        <label for="checkoutDate1" class="form-label">Check-out Date</label>
-                        <input type="date" class="form-control" id="checkoutDate1" value="2023-03-15">
-                    </div>
-                    <div class="mb-3">
-                        <label for="modifyGuests" class="form-label">Guests</label>
-                        <input type="number" class="form-control" id="modifyGuests" placeholder="2">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-maroon">Confirm Booking</button>
-            </div>
-        </div>
-    </div>
-</div>
+            $.post('/Reservations/Modify', data)
+                .done(function(response) {
+                    if (response.success) {
+                        location.reload();
+                    } else {
+                        alert('Failed to modify reservation: ' + response.message);
+                    }
+                })
+                .fail(function() {
+                    alert('An error occurred while modifying the reservation.');
+                });
+        }
 
-<!-- View Details Modal for Deluxe Suite -->
-<div class="modal fade" id="viewDetailsPastModal2" tabindex="-1" aria-labelledby="viewDetailsPastModalLabel2" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="viewDetailsPastModalLabel2">Reservation Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p><strong>Room:</strong> Deluxe Suite</p>
-                <p><strong>Dates:</strong> February 5 - February 10, 2023</p>
-                <p><strong>Guests:</strong> 1 Adult</p>
-                <p><strong>Total:</strong> $1,200</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
+        function bookAgain(reservationId) {
+            const form = $(`#bookAgainForm-${reservationId}`);
+            if (!form[0].checkValidity()) {
+                form[0].reportValidity();
+                return;
+            }
 
-<!-- Book Again Modal for Deluxe Suite -->
-<div class="modal fade" id="bookAgainModal2" tabindex="-1" aria-labelledby="bookAgainModalLabel2" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="bookAgainModalLabel2">Book Again</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Would you like to book the <strong>Deluxe Suite</strong> again?</p>
-                <form>
-                    <div class="mb-3">
-                        <label for="checkinDate2" class="form-label">Check-in Date</label>
-                        <input type="date" class="form-control" id="checkinDate2" value="2023-02-05">
-                    </div>
-                    <div class="mb-3">
-                        <label for="checkoutDate2" class="form-label">Check-out Date</label>
-                        <input type="date" class="form-control" id="checkoutDate2" value="2023-02-10">
-                    </div>
-                     <div class="mb-3">
-                        <label for="modifyGuests" class="form-label">Guests</label>
-                        <input type="number" class="form-control" id="modifyGuests" placeholder="2">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-maroon">Confirm Booking</button>
-            </div>
-        </div>
-    </div>
-</div>
+            const data = {
+                roomType: $(`#bookAgainModal-${reservationId} strong`).text(),
+                checkInDate: $(`#checkinDate-${reservationId}`).val(),
+                checkOutDate: $(`#checkoutDate-${reservationId}`).val(),
+                numberOfGuests: $(`#guests-${reservationId}`).val()
+            };
+
+            $.post('/Reservations/Book', data)
+                .done(function(response) {
+                    if (response.success) {
+                        location.reload();
+                    } else {
+                        alert('Failed to book reservation: ' + response.message);
+                    }
+                })
+                .fail(function() {
+                    alert('An error occurred while booking the reservation.');
+                });
+        }
+
+        // Initialize date inputs with minimum date as today
+        $(document).ready(function() {
+            const today = new Date().toISOString().split('T')[0];
+            $('input[type="date"]').attr('min', today);
+        });
+    </script>
+}
 
 @section Styles {
     <style>

@@ -1,5 +1,6 @@
-﻿@{
-    Layout = null;
+﻿@model WebApplication1.Models.BaseViewModel
+@{
+    Layout = "_Layout";
 }
 <head>
     <meta charset="UTF-8">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/bf35ff1032.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         body, html {
             margin: 0;
@@ -105,109 +107,82 @@
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: maroon; width: 100%;">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="#">
-                <img src="~/images/logo1.png" alt="Logo" width="50"> Nustar Hotel
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link text-white" href="#">Home</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="#">About</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="#">Services</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="#">Contact</a></li>
-                    <li class="nav-item"><a class="btn btn-outline-light mx-2" href="/Account/Login">Sign In</a></li>
-                    <li class="nav-item"><a class="btn btn-light text-maroon" href="/Account/Register">Sign Up</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
     <!-- Hero Section -->
     <div class="hero-section d-flex justify-content-center align-items-center text-center text-white">
         <div class="d-flex flex-column align-items-center p-4">
             <img src="~/images/logo1.png" />
             <img src="~/images/line.png" alt="Alternate Text" />
             <h3 style="padding:0.5rem;">"Where comfort meets style, and every stay feels like home."</h3>
-            <a href="Account/Login" class="btn p-3 mt-5" style="border: 2px solid white; border-radius: 20px; background-color:white; color:maroon; font-weight:bold;">Book Now</a>
+            <a href="@(User.Identity.IsAuthenticated ? "/Home/RoomTypes" : "/Account/Login")" class="btn p-3 mt-5" style="border: 2px solid white; border-radius: 20px; background-color:white; color:maroon; font-weight:bold;">Book Now</a>
         </div>
     </div>
 
-
-<section class="container my-5 p-4" style="height: 50vh;">
-    <div class="row align-items-center">
-        <div class="col-md-6 position-relative">
-            <div class="border-layer"></div>
-            <img src="~/images/suite.png" alt="Hotel" class="img-fluid rounded shadow-lg"/>
+    <section class="container my-5 p-4" style="height: 50vh;">
+        <div class="row align-items-center">
+            <div class="col-md-6 position-relative">
+                <div class="border-layer"></div>
+                <img src="~/images/suite.png" alt="Hotel" class="img-fluid rounded shadow-lg"/>
+            </div>
+            <div class="col-md-6 p-4">
+                <h2 class="fw-bold mb-4">Why Choose Us</h2>
+                <p>
+                    Experience luxury and comfort at its finest. Our hotel offers world-class amenities, 
+                    exceptional service, and unforgettable experiences for every guest.
+                </p>
+                <p>
+                    From our premium rooms to our award-winning restaurants, we ensure your stay is nothing 
+                    short of extraordinary.
+                </p>
+            </div>
         </div>
-        <div class="col-md-6 p-4">
-            <h2 class="fw-bold mb-4">Why Choose Us</h2>
-            <p>
-                Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit
-                officia consequat duis enim velit mollit. Exercitation veniam consequat.
+    </section>
+
+    <section class="text-white text-center py-5 p-4" style="background-color: maroon; padding: 2rem;">
+        <div class="container text-center my-5 p-4" style="color:white;">
+            <h2 class="fw-bold mb-4">Our Services</h2>
+            <p class="text-white mb-4">Discover our premium services designed to enhance your stay.<br>
+                From spa treatments to fine dining, we've got you covered.
             </p>
-            <p>
-                Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit
-                officia consequat duis enim velit mollit.
-            </p>
-            <a href="#" class="btn btn-primary">Read More</a>
+            
+            <div class="row mt-4">
+                @foreach (var service in Model.Services)
+                {
+                    <div class="col-md-3">
+                        <div class="service-card @(service.IsActive ? "active" : "")">
+                            <div class="icon">
+                                <img src="@service.IconUrl" alt="@service.Name" class="img-fluid rounded shadow-lg">
+                            </div>
+                            <h5 class="fw-bold mt-3">@service.Name</h5>
+                            <p class="text-muted">@service.Description</p>
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
-</section>
+    </section>
 
-<section class="text-white text-center py-5 p-4" style="background-color: maroon; padding: 2rem;">
-   <div class="container text-center my-5 p-4" style="color:white;">
-    <h2 class="fw-bold mb-4">Our Services</h2>
-    <p class="text-white mb-4">Lorem Ipsum is simply dummy text of the printing and typesetting industry.<br>
-        Lorem Ipsum has been the industry's standard dummy. 
-    </p>
-    
-    <div class="row mt-4">
-        <!-- Service 1 -->
-        <div class="col-md-3">
-            <div class="service-card">
-                <div class="icon">
-                    <img src="~/images/massage.png" alt="" lass="img-fluid rounded shadow-lg">
-                </div>
-                <h5 class="fw-bold mt-3">Spa</h5>
-                <p class="text-muted">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-            </div>
-        </div>
-        <!-- Service 2 -->
-        <div class="col-md-3">
-            <div class="service-card active">
-                <div class="icon">
-                    <img src="~/images/platter.png" alt="" lass="img-fluid rounded shadow-lg">
-                </div>
-                <h5 class="fw-bold mt-3">Restaurant</h5>
-                <p class="text-muted">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-            </div>
-        </div>
-        <!-- Service 3 -->
-        <div class="col-md-3">
-            <div class="service-card">
-                <div class="icon">
-                    <img src="~/images/swimming-pool.png" alt="" lass="img-fluid rounded shadow-lg">
-                </div>
-                <h5 class="fw-bold mt-3">Swimming Pool</h5>
-                <p class="text-muted">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-            </div>
-        </div>
-        <!-- Service 4 -->
-        <div class="col-md-3">
-            <div class="service-card">
-                <div class="icon">
-                    <img src="~/images/dumbbell.png" alt="" lass="img-fluid rounded shadow-lg">
-                </div>
-                <h5 class="fw-bold mt-3">Gym</h5>
-                <p class="text-muted">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-            </div>
-        </div>
-    </div>
-</div>
-</section>
+    <script>
+        $(document).ready(function() {
+            // Add smooth scrolling to all links
+            $("a").on('click', function(event) {
+                if (this.hash !== "") {
+                    event.preventDefault();
+                    var hash = this.hash;
+                    $('html, body').animate({
+                        scrollTop: $(hash).offset().top
+                    }, 800, function(){
+                        window.location.hash = hash;
+                    });
+                }
+            });
+
+            // Add active class to current nav item
+            var currentLocation = window.location.pathname;
+            $('.navbar-nav .nav-link').each(function() {
+                if ($(this).attr('href') === currentLocation) {
+                    $(this).addClass('active');
+                }
+            });
+        });
+    </script>
 </body>

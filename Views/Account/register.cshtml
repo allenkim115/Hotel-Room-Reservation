@@ -86,6 +86,16 @@
                 </div>
 
                 <div class="mb-3">
+                    @Html.TextBoxFor(m => m.Address, new { @class = "form-control", placeholder = "ADDRESS", required = "required" })
+                    @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", placeholder = "PHONE NUMBER", required = "required", type = "tel" })
+                    @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
                     @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "PASSWORD", required = "required" })
                     @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                 </div>
