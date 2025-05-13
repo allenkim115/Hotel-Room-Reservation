@@ -12,30 +12,24 @@
             <div class="profile-card">
                 <div class="profile-header">
                     <div class="profile-image">
-                        <img src="~/images/profile.png" alt="Profile Picture" class="rounded-circle" id="profilePicture">
-                        <button class="btn btn-edit-image">
+                        @if (!string.IsNullOrEmpty(Model.Profile.ProfileImageUrl))
+                        {
+                            <img src="@Model.Profile.ProfileImageUrl" alt="Profile Picture" class="rounded-circle" id="profilePicture">
+                        }
+                        else
+                        {
+                            <img src="~/images/profile.png" alt="Profile Picture" class="rounded-circle" id="profilePicture">
+                        }
+                        <button class="btn btn-edit-image" onclick="document.getElementById('profileImageInput').click()">
                             <i class="fas fa-camera"></i>
                         </button>
+                        <input type="file" id="profileImageInput" style="display: none" accept="image/*" onchange="uploadProfileImage(this)">
                     </div>
                     <h2 class="profile-name">@Model.Profile.FirstName @Model.Profile.LastName</h2>
                     <p class="profile-email">@Model.Profile.Email</p>
                     <div class="profile-status">
-                        <span class="badge badge-success">Active Member</span>
-                        <span class="badge badge-primary">Gold Tier</span>
-                    </div>
-                </div>
-                <div class="profile-stats">
-                    <div class="stat-item">
-                        <h4>@Model.Profile.TotalStays</h4>
-                        <p>Total Stays</p>
-                    </div>
-                    <div class="stat-item">
-                        <h4>@Model.Profile.UpcomingStays</h4>
-                        <p>Upcoming</p>
-                    </div>
-                    <div class="stat-item">
-                        <h4>@Model.Profile.PastStays</h4>
-                        <p>Past Stays</p>
+                        <span class="badge badge-success">@Model.Profile.MembershipLevel</span>
+                        <span class="badge badge-primary">@Model.Profile.LoyaltyPoints Points</span>
                     </div>
                 </div>
             </div>
@@ -45,40 +39,47 @@
         <div class="col-md-8">
             <div class="settings-card">
                 <h3 class="settings-title">Account Settings</h3>
-                <form class="settings-form">
+                <form id="profileForm" class="settings-form" method="post">
+                    @Html.AntiForgeryToken()
                     <div class="form-group">
-                        <label>Full Name</label>
-                        <input type="text" class="form-control" value="@Model.Profile.FirstName @Model.Profile.LastName">
+                        <label>First Name</label>
+                        <input type="text" class="form-control" name="FirstName" value="@Model.Profile.FirstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input type="text" class="form-control" name="LastName" value="@Model.Profile.LastName" required>
                     </div>
                     <div class="form-group">
                         <label>Email Address</label>
-                        <input type="email" class="form-control" value="@Model.Profile.Email">
+                        <input type="email" class="form-control" name="Email" value="@Model.Profile.Email" required>
                     </div>
                     <div class="form-group">
                         <label>Phone Number</label>
-                        <input type="tel" class="form-control" value="@Model.Profile.PhoneNumber">
+                        <input type="tel" class="form-control" name="PhoneNumber" value="@Model.Profile.PhoneNumber" required>
                     </div>
                     <div class="form-group">
                         <label>Address</label>
-                        <textarea class="form-control" rows="3">@Model.Profile.Address</textarea>
+                        <textarea class="form-control" name="Address" rows="3">@Model.Profile.Address</textarea>
                     </div>
                     <div class="form-group">
                         <label>Preferred Language</label>
-                        <select class="form-control">
-                            <option>English</option>
-                            <option>Spanish</option>
-                            <option>French</option>
-                            <option>German</option>
+                        <select class="form-control" name="PreferredLanguage">
+                            <option value="en" selected="@(Model.Profile.PreferredLanguage == "en")">English</option>
+                            <option value="es" selected="@(Model.Profile.PreferredLanguage == "es")">Spanish</option>
+                            <option value="fr" selected="@(Model.Profile.PreferredLanguage == "fr")">French</option>
+                            <option value="de" selected="@(Model.Profile.PreferredLanguage == "de")">German</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>Notification Preferences</label>
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="emailNotifications" checked>
+                            <input type="hidden" name="EmailNotifications" value="false" />
+                            <input type="checkbox" class="custom-control-input" id="emailNotifications" name="EmailNotifications" value="true" @(Model.Profile.EmailNotifications ? "checked" : "")>
                             <label class="custom-control-label" for="emailNotifications">Email Notifications</label>
                         </div>
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="smsNotifications" checked>
+                            <input type="hidden" name="SmsNotifications" value="false" />
+                            <input type="checkbox" class="custom-control-input" id="smsNotifications" name="SmsNotifications" value="true" @(Model.Profile.SmsNotifications ? "checked" : "")>
                             <label class="custom-control-label" for="smsNotifications">SMS Notifications</label>
                         </div>
                     </div>
@@ -89,18 +90,18 @@
             <!-- Security Settings -->
             <div class="settings-card mt-4">
                 <h3 class="settings-title">Security Settings</h3>
-                <form class="settings-form">
+                <form id="securityForm" class="settings-form">
                     <div class="form-group">
                         <label>Current Password</label>
-                        <input type="password" class="form-control">
+                        <input type="password" class="form-control" name="CurrentPassword" required>
                     </div>
                     <div class="form-group">
                         <label>New Password</label>
-                        <input type="password" class="form-control">
+                        <input type="password" class="form-control" name="NewPassword" required>
                     </div>
                     <div class="form-group">
                         <label>Confirm New Password</label>
-                        <input type="password" class="form-control">
+                        <input type="password" class="form-control" name="ConfirmPassword" required>
                     </div>
                     <button type="submit" class="btn btn-maroon">Update Password</button>
                 </form>
@@ -108,6 +109,92 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        function uploadProfileImage(input) {
+            if (input.files && input.files[0]) {
+                const formData = new FormData();
+                formData.append('profileImage', input.files[0]);
+
+                $.ajax({
+                    url: '/Profile/UploadImage',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response.success) {
+                            $('#profilePicture').attr('src', response.imageUrl);
+                        } else {
+                            alert('Failed to upload image: ' + response.message);
+                        }
+                    },
+                    error: function() {
+                        alert('An error occurred while uploading the image.');
+                    }
+                });
+            }
+        }
+
+        $('#profileForm').on('submit', function(e) {
+            e.preventDefault();
+            const formData = $(this).serialize();
+            
+            // Debug: Log the form data
+            console.log('Sending form data:', formData);
+
+            $.ajax({
+                url: '/Profile/Update',
+                type: 'POST',
+                data: formData,
+                headers: {
+                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                },
+                success: function(response) {
+                    console.log('Server response:', response); // Debug: Log the response
+                    if (response.success) {
+                        // Update the displayed information immediately
+                        $('.profile-name').text(response.user.firstName + ' ' + response.user.lastName);
+                        $('.profile-email').text(response.user.email);
+                        $('input[name="PhoneNumber"]').val(response.user.phoneNumber);
+                        $('textarea[name="Address"]').val(response.user.address);
+                        
+                        // Show success message
+                        alert('Profile updated successfully!');
+                        
+                        // Force reload the page to ensure all data is fresh
+                        window.location.href = window.location.href;
+                    } else {
+                        alert('Failed to update profile: ' + response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error details:', {xhr, status, error}); // Debug: Log error details
+                    alert('An error occurred while updating the profile: ' + error);
+                }
+            });
+        });
+
+        $('#securityForm').on('submit', function(e) {
+            e.preventDefault();
+            const formData = $(this).serialize();
+
+            $.post('/Profile/UpdatePassword', formData)
+                .done(function(response) {
+                    if (response.success) {
+                        alert('Password updated successfully!');
+                        this.reset();
+                    } else {
+                        alert('Failed to update password: ' + response.message);
+                    }
+                })
+                .fail(function() {
+                    alert('An error occurred while updating the password.');
+                });
+        });
+    </script>
+}
 
 @section Styles {
     <style>
@@ -255,15 +342,3 @@
         }
     </style>
 }
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const profilePicture = document.getElementById("profilePicture");
-        const btnEditImage = document.querySelector(".btn-edit-image");
-
-        btnEditImage.addEventListener("click", function() {
-            // Implement image upload logic here
-            console.log("Edit image clicked");
-        });
-    });
-</script>

@@ -1,726 +1,401 @@
+@model WebApplication1.Models.BaseViewModel
 @{
     Layout = "_DashboardLayout";
     ViewData["Title"] = "Hotel Services";
 }
 
-<h1 class="page-title">Hotel Services</h1>
-
 <div class="services-container">
-    <!-- Restaurant Services -->
-    <div class="section-container">
-        <h2 class="section-title">Dining & Restaurant</h2>
+    <!-- Dining Services -->
+    <section class="service-section">
+        <h2 class="section-title">Dining Services</h2>
         <div class="row">
-            <div class="col-md-4">
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-utensils"></i>
+            @foreach (var service in Model.Services.Where(s => s.Category == "Dining"))
+            {
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="service-card">
+                        <div class="service-image">
+                            <img src="@service.ImageUrl" alt="@service.Name" class="img-fluid">
+                        </div>
+                        <div class="service-details">
+                            <h3 class="service-name">@service.Name</h3>
+                            <p class="service-description">@service.Description</p>
+                            <div class="service-info">
+                                <span><i class="fas fa-clock"></i> @service.OperatingHours</span>
+                                <span><i class="fas fa-map-marker-alt"></i> @service.Location</span>
+                            </div>
+                            <button class="btn btn-maroon btn-block" onclick="showBookingModal('@service.Id')">
+                                Book Now
+                            </button>
+                        </div>
                     </div>
-                    <h3>Main Restaurant</h3>
-                    <p>Enjoy our fine dining experience with a variety of international cuisines.</p>
-                    <ul class="service-features">
-                        <li><i class="fas fa-clock"></i> 6:00 AM - 11:00 PM</li>
-                        <li><i class="fas fa-map-marker-alt"></i> Ground Floor</li>
-                        <li><i class="fas fa-dollar-sign"></i> $$$</li>
-                    </ul>
-                    <button type="button" class="btn btn-maroon" data-bs-toggle="modal" data-bs-target="#restaurantModal">Book a Table</button>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-coffee"></i>
-                    </div>
-                    <h3>Coffee Shop</h3>
-                    <p>Relax with our premium coffee and light snacks in a cozy atmosphere.</p>
-                    <ul class="service-features">
-                        <li><i class="fas fa-clock"></i> 7:00 AM - 10:00 PM</li>
-                        <li><i class="fas fa-map-marker-alt"></i> Lobby</li>
-                        <li><i class="fas fa-dollar-sign"></i> $$</li>
-                    </ul>
-                    <button type="button" class="btn btn-maroon" data-bs-toggle="modal" data-bs-target="#coffeeShopModal">Order Now</button>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-cocktail"></i>
-                    </div>
-                    <h3>Bar & Lounge</h3>
-                    <p>Unwind with our signature cocktails and live music in the evening.</p>
-                    <ul class="service-features">
-                        <li><i class="fas fa-clock"></i> 4:00 PM - 2:00 AM</li>
-                        <li><i class="fas fa-map-marker-alt"></i> 2nd Floor</li>
-                        <li><i class="fas fa-dollar-sign"></i> $$$</li>
-                    </ul>
-                    <button type="button" class="btn btn-maroon" data-bs-toggle="modal" data-bs-target="#barLoungeModal">Reserve</button>
-                </div>
-            </div>
+            }
         </div>
-    </div>
+    </section>
 
     <!-- Wellness Services -->
-    <div class="section-container">
-        <h2 class="section-title">Wellness & Spa</h2>
+    <section class="service-section">
+        <h2 class="section-title">Wellness Services</h2>
         <div class="row">
-            <div class="col-md-4">
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-spa"></i>
+            @foreach (var service in Model.Services.Where(s => s.Category == "Wellness"))
+            {
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="service-card">
+                        <div class="service-image">
+                            <img src="@service.ImageUrl" alt="@service.Name" class="img-fluid">
+                        </div>
+                        <div class="service-details">
+                            <h3 class="service-name">@service.Name</h3>
+                            <p class="service-description">@service.Description</p>
+                            <div class="service-info">
+                                <span><i class="fas fa-clock"></i> @service.OperatingHours</span>
+                                <span><i class="fas fa-map-marker-alt"></i> @service.Location</span>
+                            </div>
+                            <button class="btn btn-maroon btn-block" onclick="showBookingModal('@service.Id')">
+                                Book Now
+                            </button>
+                        </div>
                     </div>
-                    <h3>Spa Services</h3>
-                    <p>Indulge in our premium spa treatments and massages.</p>
-                    <ul class="service-features">
-                        <li><i class="fas fa-clock"></i> 9:00 AM - 9:00 PM</li>
-                        <li><i class="fas fa-map-marker-alt"></i> Spa Center</li>
-                        <li><i class="fas fa-dollar-sign"></i> $$$$</li>
-                    </ul>
-                    <button type="button" class="btn btn-maroon" data-bs-toggle="modal" data-bs-target="#spaModal">Book Treatment</button>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-swimming-pool"></i>
-                    </div>
-                    <h3>Swimming Pool</h3>
-                    <p>Enjoy our heated indoor pool and jacuzzi facilities.</p>
-                    <ul class="service-features">
-                        <li><i class="fas fa-clock"></i> 6:00 AM - 10:00 PM</li>
-                        <li><i class="fas fa-map-marker-alt"></i> 3rd Floor</li>
-                        <li><i class="fas fa-dollar-sign"></i> Free for Guests</li>
-                    </ul>
-                    <button type="button" class="btn btn-maroon" data-bs-toggle="modal" data-bs-target="#poolModal">View Schedule</button>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-dumbbell"></i>
-                    </div>
-                    <h3>Fitness Center</h3>
-                    <p>Stay fit with our state-of-the-art gym equipment.</p>
-                    <ul class="service-features">
-                        <li><i class="fas fa-clock"></i> 24/7</li>
-                        <li><i class="fas fa-map-marker-alt"></i> 3rd Floor</li>
-                        <li><i class="fas fa-dollar-sign"></i> Free for Guests</li>
-                    </ul>
-                    <button type="button" class="btn btn-maroon" data-bs-toggle="modal" data-bs-target="#fitnessModal">View Facilities</button>
-                </div>
-            </div>
+            }
         </div>
-    </div>
+    </section>
 
     <!-- Additional Services -->
-    <div class="section-container">
+    <section class="service-section">
         <h2 class="section-title">Additional Services</h2>
         <div class="row">
-            <div class="col-md-4">
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-concierge-bell"></i>
+            @foreach (var service in Model.Services.Where(s => s.Category == "Additional"))
+            {
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="service-card">
+                        <div class="service-image">
+                            <img src="@service.ImageUrl" alt="@service.Name" class="img-fluid">
+                        </div>
+                        <div class="service-details">
+                            <h3 class="service-name">@service.Name</h3>
+                            <p class="service-description">@service.Description</p>
+                            <div class="service-info">
+                                <span><i class="fas fa-clock"></i> @service.OperatingHours</span>
+                                <span><i class="fas fa-map-marker-alt"></i> @service.Location</span>
+                            </div>
+                            <button class="btn btn-maroon btn-block" onclick="showBookingModal('@service.Id')">
+                                Book Now
+                            </button>
+                        </div>
                     </div>
-                    <h3>Room Service</h3>
-                    <p>24/7 room service available for your convenience.</p>
-                    <ul class="service-features">
-                        <li><i class="fas fa-clock"></i> 24/7</li>
-                        <li><i class="fas fa-phone"></i> Ext. 1234</li>
-                        <li><i class="fas fa-dollar-sign"></i> Menu Prices</li>
-                    </ul>
-                    <button type="button" class="btn btn-maroon" data-bs-toggle="modal" data-bs-target="#roomServiceModal">View Menu</button>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-car"></i>
-                    </div>
-                    <h3>Valet Parking</h3>
-                    <p>Professional valet parking service available.</p>
-                    <ul class="service-features">
-                        <li><i class="fas fa-clock"></i> 24/7</li>
-                        <li><i class="fas fa-map-marker-alt"></i> Main Entrance</li>
-                        <li><i class="fas fa-dollar-sign"></i> $20/day</li>
-                    </ul>
-                    <button type="button" class="btn btn-maroon" data-bs-toggle="modal" data-bs-target="#valetModal">Book Parking</button>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-business-time"></i>
-                    </div>
-                    <h3>Business Center</h3>
-                    <p>Fully equipped business center for your work needs.</p>
-                    <ul class="service-features">
-                        <li><i class="fas fa-clock"></i> 7:00 AM - 9:00 PM</li>
-                        <li><i class="fas fa-map-marker-alt"></i> 1st Floor</li>
-                        <li><i class="fas fa-dollar-sign"></i> Free for Guests</li>
-                    </ul>
-                    <button type="button" class="btn btn-maroon" data-bs-toggle="modal" data-bs-target="#businessModal">View Facilities</button>
-                </div>
-            </div>
+            }
         </div>
-    </div>
+    </section>
 </div>
 
-<!-- Restaurant Booking Modal -->
-<div class="modal fade" id="restaurantModal" tabindex="-1" aria-labelledby="restaurantModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+<!-- Booking Modal -->
+<div class="modal fade" id="bookingModal" tabindex="-1" role="dialog" aria-labelledby="bookingModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="restaurantModalLabel">Book a Table - Main Restaurant</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title" id="bookingModalLabel">Book Service</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
-                <form id="restaurantBookingForm">
-                    <div class="mb-3">
-                        <label for="restaurantDate" class="form-label">Date</label>
-                        <input type="date" class="form-control" id="restaurantDate" required>
+                <form id="bookingForm">
+                    <input type="hidden" id="serviceId" name="ServiceId">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="bookingDate">Booking Date</label>
+                                <input type="date" class="form-control" id="bookingDate" name="BookingDate" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="bookingTime">Booking Time</label>
+                                <input type="time" class="form-control" id="bookingTime" name="BookingTime" required>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="restaurantTime" class="form-label">Time</label>
-                        <input type="time" class="form-control" id="restaurantTime" required>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="guests">Number of Guests</label>
+                                <input type="number" class="form-control" id="guests" name="NumberOfGuests" min="1" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="specialRequests">Special Requests</label>
+                                <textarea class="form-control" id="specialRequests" name="SpecialRequests" rows="3"></textarea>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="restaurantGuests" class="form-label">Number of Guests</label>
-                        <input type="number" class="form-control" id="restaurantGuests" min="1" max="10" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="restaurantSpecialRequests" class="form-label">Special Requests</label>
-                        <textarea class="form-control" id="restaurantSpecialRequests" rows="3"></textarea>
+                    <div class="booking-summary">
+                        <h4>Booking Summary</h4>
+                        <div class="summary-details">
+                            <div class="summary-item">
+                                <span>Service:</span>
+                                <span id="summaryService"></span>
+                            </div>
+                            <div class="summary-item">
+                                <span>Date & Time:</span>
+                                <span id="summaryDateTime"></span>
+                            </div>
+                            <div class="summary-item">
+                                <span>Total Price:</span>
+                                <span id="summaryTotal"></span>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-maroon" onclick="submitRestaurantBooking()">Submit Booking</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-maroon" onclick="submitBooking()">Confirm Booking</button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Coffee Shop Modal -->
-<div class="modal fade" id="coffeeShopModal" tabindex="-1" aria-labelledby="coffeeShopModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="coffeeShopModalLabel">Order from Coffee Shop</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="coffeeShopForm">
-                    <div class="mb-3">
-                        <label for="coffeeShopDate" class="form-label">Date</label>
-                        <input type="date" class="form-control" id="coffeeShopDate" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="coffeeShopTime" class="form-label">Time</label>
-                        <input type="time" class="form-control" id="coffeeShopTime" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="coffeeShopItems" class="form-label">Items</label>
-                        <select class="form-select" id="coffeeShopItems" multiple required>
-                            <option value="espresso">Espresso</option>
-                            <option value="cappuccino">Cappuccino</option>
-                            <option value="latte">Latte</option>
-                            <option value="pastry">Pastry</option>
-                            <option value="sandwich">Sandwich</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="coffeeShopSpecialRequests" class="form-label">Special Requests</label>
-                        <textarea class="form-control" id="coffeeShopSpecialRequests" rows="3"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-maroon" onclick="submitCoffeeShopOrder()">Place Order</button>
-            </div>
-        </div>
-    </div>
-</div>
+@section Scripts {
+    <script>
+        let isSubmitting = false;
+        const services = JSON.parse('@Html.Raw(Json.Serialize(Model.Services))');
 
-<!-- Bar & Lounge Modal -->
-<div class="modal fade" id="barLoungeModal" tabindex="-1" aria-labelledby="barLoungeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="barLoungeModalLabel">Reserve at Bar & Lounge</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="barLoungeForm">
-                    <div class="mb-3">
-                        <label for="barLoungeDate" class="form-label">Date</label>
-                        <input type="date" class="form-control" id="barLoungeDate" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="barLoungeTime" class="form-label">Time</label>
-                        <input type="time" class="form-control" id="barLoungeTime" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="barLoungeGuests" class="form-label">Number of Guests</label>
-                        <input type="number" class="form-control" id="barLoungeGuests" min="1" max="8" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="barLoungeTableType" class="form-label">Table Type</label>
-                        <select class="form-select" id="barLoungeTableType" required>
-                            <option value="bar">Bar Table</option>
-                            <option value="lounge">Lounge Table</option>
-                            <option value="private">Private Booth</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="barLoungeSpecialRequests" class="form-label">Special Requests</label>
-                        <textarea class="form-control" id="barLoungeSpecialRequests" rows="3"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-maroon" onclick="submitBarLoungeReservation()">Submit Reservation</button>
-            </div>
-        </div>
-    </div>
-</div>
+        function showBookingModal(serviceId) {
+            serviceId = Number(serviceId);
+            const service = services.find(s => s.id === serviceId);
+            if (!service) {
+                alert('Invalid service selected.');
+                return;
+            }
 
-<!-- Spa Services Modal -->
-<div class="modal fade" id="spaModal" tabindex="-1" aria-labelledby="spaModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="spaModalLabel">Book Spa Treatment</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="spaForm">
-                    <div class="mb-3">
-                        <label for="spaDate" class="form-label">Date</label>
-                        <input type="date" class="form-control" id="spaDate" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="spaTime" class="form-label">Time</label>
-                        <input type="time" class="form-control" id="spaTime" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="spaTreatment" class="form-label">Treatment Type</label>
-                        <select class="form-select" id="spaTreatment" required>
-                            <option value="massage">Swedish Massage</option>
-                            <option value="facial">Facial Treatment</option>
-                            <option value="body">Body Treatment</option>
-                            <option value="package">Spa Package</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="spaDuration" class="form-label">Duration</label>
-                        <select class="form-select" id="spaDuration" required>
-                            <option value="30">30 minutes</option>
-                            <option value="60">60 minutes</option>
-                            <option value="90">90 minutes</option>
-                            <option value="120">120 minutes</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="spaSpecialRequests" class="form-label">Special Requests</label>
-                        <textarea class="form-control" id="spaSpecialRequests" rows="3"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-maroon" onclick="submitSpaBooking()">Book Treatment</button>
-            </div>
-        </div>
-    </div>
-</div>
+            $('#serviceId').val(serviceId);
+            $('#summaryService').text(service.Name);
+            
+            // Set min date to today
+            const today = new Date().toISOString().split('T')[0];
+            $('#bookingDate').attr('min', today);
+            
+            // Set max guests if applicable
+            if (service.MaxGuests) {
+                $('#guests').attr('max', service.MaxGuests);
+                $('#guests').attr('placeholder', `Max ${service.MaxGuests} guests`);
+            }
+            
+            // Reset form
+            $('#bookingForm')[0].reset();
+            $('#bookingModal').modal('show');
+        }
 
-<!-- Swimming Pool Modal -->
-<div class="modal fade" id="poolModal" tabindex="-1" aria-labelledby="poolModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="poolModalLabel">Pool Schedule</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="pool-schedule">
-                    <h6>Daily Schedule</h6>
-                    <ul class="list-unstyled">
-                        <li><strong>Morning:</strong> 6:00 AM - 12:00 PM</li>
-                        <li><strong>Afternoon:</strong> 1:00 PM - 6:00 PM</li>
-                        <li><strong>Evening:</strong> 7:00 PM - 10:00 PM</li>
-                    </ul>
-                    <div class="alert alert-info">
-                        <i class="fas fa-info-circle"></i> The pool is free for all hotel guests. Please bring your room key for access.
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
+        function validateDateTime() {
+            const bookingDate = $('#bookingDate').val();
+            const bookingTime = $('#bookingTime').val();
+            const serviceId = Number($('#serviceId').val());
+            const service = services.find(s => s.id === serviceId);
+            
+            if (!bookingDate || !bookingTime) {
+                return false;
+            }
 
-<!-- Fitness Center Modal -->
-<div class="modal fade" id="fitnessModal" tabindex="-1" aria-labelledby="fitnessModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="fitnessModalLabel">Fitness Center Information</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="fitness-info">
-                    <h6>Available Facilities</h6>
-                    <ul class="list-unstyled">
-                        <li><i class="fas fa-check"></i> Cardio Equipment</li>
-                        <li><i class="fas fa-check"></i> Weight Training</li>
-                        <li><i class="fas fa-check"></i> Yoga Area</li>
-                        <li><i class="fas fa-check"></i> Personal Training</li>
-                    </ul>
-                    <div class="alert alert-info">
-                        <i class="fas fa-info-circle"></i> The fitness center is open 24/7 for hotel guests. Please bring your room key for access.
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
+            const selectedDateTime = new Date(`${bookingDate}T${bookingTime}`);
+            const now = new Date();
+            
+            // Prevent past bookings
+            if (selectedDateTime <= now) {
+                alert('Please select a future date and time');
+                return false;
+            }
 
-<!-- Room Service Modal -->
-<div class="modal fade" id="roomServiceModal" tabindex="-1" aria-labelledby="roomServiceModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="roomServiceModalLabel">Room Service Menu</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h6>Breakfast</h6>
-                        <ul class="list-unstyled">
-                            <li>Continental Breakfast - $15</li>
-                            <li>Full English Breakfast - $20</li>
-                            <li>Pancakes with Maple Syrup - $12</li>
-                            <li>Fresh Fruit Platter - $10</li>
-                        </ul>
-                    </div>
-                    <div class="col-md-6">
-                        <h6>Lunch & Dinner</h6>
-                        <ul class="list-unstyled">
-                            <li>Club Sandwich - $14</li>
-                            <li>Caesar Salad - $12</li>
-                            <li>Grilled Salmon - $25</li>
-                            <li>Beef Tenderloin - $28</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="alert alert-info mt-3">
-                    <i class="fas fa-phone"></i> To place an order, please call extension 1234
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
+            // Validate operating hours
+            if (service.OperatingHours) {
+                const [openTime, closeTime] = service.OperatingHours.split(' - ');
+                const [openHour, openMin] = openTime.split(':').map(Number);
+                const [closeHour, closeMin] = closeTime.split(':').map(Number);
+                
+                const bookingHour = selectedDateTime.getHours();
+                const bookingMin = selectedDateTime.getMinutes();
+                
+                const isBeforeOpening = bookingHour < openHour || 
+                    (bookingHour === openHour && bookingMin < openMin);
+                const isAfterClosing = bookingHour > closeHour || 
+                    (bookingHour === closeHour && bookingMin > closeMin);
+                
+                if (isBeforeOpening || isAfterClosing) {
+                    alert(`This service is only available between ${openTime} and ${closeTime}`);
+                    return false;
+                }
+            }
+            
+            return true;
+        }
 
-<!-- Valet Parking Modal -->
-<div class="modal fade" id="valetModal" tabindex="-1" aria-labelledby="valetModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="valetModalLabel">Book Valet Parking</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="valetForm">
-                    <div class="mb-3">
-                        <label for="valetDate" class="form-label">Date</label>
-                        <input type="date" class="form-control" id="valetDate" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="valetDuration" class="form-label">Duration (days)</label>
-                        <input type="number" class="form-control" id="valetDuration" min="1" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="valetCarModel" class="form-label">Car Model</label>
-                        <input type="text" class="form-control" id="valetCarModel" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="valetLicensePlate" class="form-label">License Plate</label>
-                        <input type="text" class="form-control" id="valetLicensePlate" required>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-maroon" onclick="submitValetBooking()">Book Parking</button>
-            </div>
-        </div>
-    </div>
-</div>
+        function validateGuests() {
+            const guests = parseInt($('#guests').val());
+            const serviceId = Number($('#serviceId').val());
+            const service = services.find(s => s.id === serviceId);
+            
+            if (guests < 1) {
+                alert('Number of guests must be at least 1');
+                return false;
+            }
+            
+            if (service.MaxGuests && guests > service.MaxGuests) {
+                alert(`Maximum capacity for this service is ${service.MaxGuests} guests`);
+                return false;
+            }
+            
+            return true;
+        }
 
-<!-- Business Center Modal -->
-<div class="modal fade" id="businessModal" tabindex="-1" aria-labelledby="businessModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="businessModalLabel">Business Center Facilities</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="business-facilities">
-                    <h6>Available Services</h6>
-                    <ul class="list-unstyled">
-                        <li><i class="fas fa-check"></i> High-speed Internet</li>
-                        <li><i class="fas fa-check"></i> Printing & Scanning</li>
-                        <li><i class="fas fa-check"></i> Meeting Rooms</li>
-                        <li><i class="fas fa-check"></i> Fax Services</li>
-                        <li><i class="fas fa-check"></i> Computer Workstations</li>
-                    </ul>
-                    <div class="alert alert-info">
-                        <i class="fas fa-info-circle"></i> All services are free for hotel guests. Please present your room key at the business center.
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
+        function updateBookingSummary() {
+            if (!validateDateTime()) {
+                return;
+            }
+
+            const bookingDate = $('#bookingDate').val();
+            const bookingTime = $('#bookingTime').val();
+            const guests = $('#guests').val();
+            const serviceId = Number($('#serviceId').val());
+            const service = services.find(s => s.id === serviceId);
+            
+            if (bookingDate && bookingTime && service) {
+                const dateTime = new Date(`${bookingDate}T${bookingTime}`);
+                const formattedDateTime = dateTime.toLocaleString();
+                const total = service.pricePerPerson * guests;
+                $('#summaryDateTime').text(formattedDateTime);
+                $('#summaryTotal').text(`$${total.toFixed(2)}`);
+            }
+        }
+
+        $('#bookingDate, #bookingTime, #guests').on('change', updateBookingSummary);
+
+        function submitBooking() {
+            if (isSubmitting) return;
+            
+            if (!validateDateTime() || !validateGuests()) {
+                return;
+            }
+
+            isSubmitting = true;
+            const submitButton = $('button[onclick="submitBooking()"]');
+            const originalText = submitButton.text();
+            submitButton.prop('disabled', true).text('Processing...');
+
+            const formData = $('#bookingForm').serialize();
+            $.post('/Services/Book', formData)
+                .done(function(response) {
+                    if (response.success) {
+                        alert('Service booked successfully!');
+                        window.location.href = '/Home/Reservations';
+                    } else {
+                        alert('Failed to book service: ' + response.message);
+                    }
+                })
+                .fail(function(xhr) {
+                    alert('An error occurred while booking the service: ' + 
+                          (xhr.responseJSON?.message || 'Please try again later.'));
+                })
+                .always(function() {
+                    isSubmitting = false;
+                    submitButton.prop('disabled', false).text(originalText);
+                });
+        }
+    </script>
+}
 
 @section Styles {
     <style>
-        .page-title {
-            color: var(--primary-color);
-            font-weight: bold;
-            margin-bottom: 30px;
-            font-size: 2rem;
-            text-align: center;
+        .services-container {
+            padding: 2rem 0;
         }
 
-        .section-container {
-            margin-bottom: 40px;
+        .service-section {
+            margin-bottom: 3rem;
         }
 
         .section-title {
             color: var(--primary-color);
-            font-weight: 600;
-            margin-bottom: 25px;
-            font-size: 1.5rem;
-            position: relative;
-            padding-bottom: 10px;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 50px;
-            height: 3px;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-            border-radius: 3px;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
         }
 
         .service-card {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s;
-            text-align: center;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
             height: 100%;
-            display: flex;
-            flex-direction: column;
         }
 
         .service-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
         }
 
-        .service-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-            border-radius: 50%;
+        .service-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .service-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .service-details {
+            padding: 1.5rem;
+        }
+
+        .service-name {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .service-description {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .service-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-info span {
             display: flex;
             align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            color: white;
-            font-size: 2rem;
+            gap: 0.5rem;
+            color: #666;
         }
 
-        .service-card h3 {
-            color: var(--primary-color);
-            margin-bottom: 15px;
-            font-size: 1.3rem;
+        .booking-summary {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1rem;
         }
 
-        .service-card p {
-            color: var(--text-light);
-            margin-bottom: 20px;
+        .summary-details {
+            margin-top: 1rem;
         }
 
-        .service-features {
-            list-style: none;
-            padding: 0;
-            margin-bottom: 20px;
-        }
-
-        .service-features li {
+        .summary-item {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 8px;
-            color: var(--text-light);
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
         }
 
-        .service-features i {
+        .summary-item:last-child {
+            margin-bottom: 0;
+            font-weight: bold;
             color: var(--primary-color);
-            margin-right: 8px;
-            width: 20px;
-            text-align: center;
-        }
-
-        .btn-maroon {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 8px;
-            font-weight: 500;
-            transition: all 0.3s;
-            margin-top: auto;
-        }
-
-        .btn-maroon:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(139, 28, 28, 0.3);
-            color: white;
         }
     </style>
 }
-
-@section Scripts {
-    <script>
-        function submitRestaurantBooking() {
-            const form = document.getElementById('restaurantBookingForm');
-            if (form.checkValidity()) {
-                // Here you would typically send the data to your backend
-                const bookingData = {
-                    date: document.getElementById('restaurantDate').value,
-                    time: document.getElementById('restaurantTime').value,
-                    guests: document.getElementById('restaurantGuests').value,
-                    specialRequests: document.getElementById('restaurantSpecialRequests').value
-                };
-                
-                // TODO: Add your API call here
-                console.log('Booking submitted:', bookingData);
-                
-                // Show success message
-                alert('Your table has been booked successfully!');
-                
-                // Close the modal
-                const modal = bootstrap.Modal.getInstance(document.getElementById('restaurantModal'));
-                modal.hide();
-            } else {
-                form.reportValidity();
-            }
-        }
-
-        function submitCoffeeShopOrder() {
-            const form = document.getElementById('coffeeShopForm');
-            if (form.checkValidity()) {
-                const orderData = {
-                    date: document.getElementById('coffeeShopDate').value,
-                    time: document.getElementById('coffeeShopTime').value,
-                    items: Array.from(document.getElementById('coffeeShopItems').selectedOptions).map(option => option.value),
-                    specialRequests: document.getElementById('coffeeShopSpecialRequests').value
-                };
-                
-                console.log('Order submitted:', orderData);
-                alert('Your order has been placed successfully!');
-                
-                const modal = bootstrap.Modal.getInstance(document.getElementById('coffeeShopModal'));
-                modal.hide();
-            } else {
-                form.reportValidity();
-            }
-        }
-
-        function submitBarLoungeReservation() {
-            const form = document.getElementById('barLoungeForm');
-            if (form.checkValidity()) {
-                const reservationData = {
-                    date: document.getElementById('barLoungeDate').value,
-                    time: document.getElementById('barLoungeTime').value,
-                    guests: document.getElementById('barLoungeGuests').value,
-                    tableType: document.getElementById('barLoungeTableType').value,
-                    specialRequests: document.getElementById('barLoungeSpecialRequests').value
-                };
-                
-                console.log('Reservation submitted:', reservationData);
-                alert('Your reservation has been confirmed!');
-                
-                const modal = bootstrap.Modal.getInstance(document.getElementById('barLoungeModal'));
-                modal.hide();
-            } else {
-                form.reportValidity();
-            }
-        }
-
-        function submitSpaBooking() {
-            const form = document.getElementById('spaForm');
-            if (form.checkValidity()) {
-                const bookingData = {
-                    date: document.getElementById('spaDate').value,
-                    time: document.getElementById('spaTime').value,
-                    treatment: document.getElementById('spaTreatment').value,
-                    duration: document.getElementById('spaDuration').value,
-                    specialRequests: document.getElementById('spaSpecialRequests').value
-                };
-                
-                console.log('Spa booking submitted:', bookingData);
-                alert('Your spa treatment has been booked successfully!');
-                
-                const modal = bootstrap.Modal.getInstance(document.getElementById('spaModal'));
-                modal.hide();
-            } else {
-                form.reportValidity();
-            }
-        }
-
-        function submitValetBooking() {
-            const form = document.getElementById('valetForm');
-            if (form.checkValidity()) {
-                const bookingData = {
-                    date: document.getElementById('valetDate').value,
-                    duration: document.getElementById('valetDuration').value,
-                    carModel: document.getElementById('valetCarModel').value,
-                    licensePlate: document.getElementById('valetLicensePlate').value
-                };
-                
-                console.log('Valet booking submitted:', bookingData);
-                alert('Your valet parking has been booked successfully!');
-                
-                const modal = bootstrap.Modal.getInstance(document.getElementById('valetModal'));
-                modal.hide();
-            } else {
-                form.reportValidity();
-            }
-        }
-    </script>
-} 

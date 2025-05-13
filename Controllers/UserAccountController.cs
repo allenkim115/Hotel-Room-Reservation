@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using Hotel_Room_Reservation.Models;
+using WebApplication1.Models;
 
-namespace Hotel_Room_Reservation.Controllers
+namespace WebApplication1.Controllers
 {
     public class UserAccountController : Controller
     {

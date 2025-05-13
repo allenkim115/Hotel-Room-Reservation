@@ -38,6 +38,26 @@ namespace WebApplication1.Models
         [Column("ROLE")]
         public string Role { get; set; }
 
+        [Required]
+        [Column("PHONENUMBER")]
+        public string PhoneNumber { get; set; }
+
+        [Required]
+        [Column("ADDRESS")]
+        public string Address { get; set; }
+
+        [Column("PREFERREDLANGUAGE")]
+        public string PreferredLanguage { get; set; }
+
+        [Column("EMAILNOTIFICATIONS")]
+        public bool EmailNotifications { get; set; }
+
+        [Column("SMSNOTIFICATIONS")]
+        public bool SmsNotifications { get; set; }
+
+        [Column("PROFILEIMAGEURL")]
+        public string ProfileImageUrl { get; set; }
+
         //public string PhoneNumber { get; set; }
 
        // public string Address { get; set; }

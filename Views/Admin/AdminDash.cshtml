@@ -1,0 +1,208 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid">
+    <!-- Quick Stats -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-value">85%</div>
+                <div class="stat-label">Occupancy Rate</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-value">$45,678</div>
+                <div class="stat-label">Monthly Revenue</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-value">234</div>
+                <div class="stat-label">Total Bookings</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-value">4.8</div>
+                <div class="stat-label">Average Rating</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Filters -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Report Type</label>
+                    <select class="form-select">
+                        <option>Reservation Report</option>
+                        <option>Revenue Report</option>
+                        <option>Occupancy Report</option>
+                        <option>Guest Satisfaction Report</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Date Range</label>
+                    <select class="form-select">
+                        <option>Last 7 Days</option>
+                        <option>Last 30 Days</option>
+                        <option>Last 90 Days</option>
+                        <option>Custom Range</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Start Date</label>
+                    <input type="date" class="form-control">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">End Date</label>
+                    <input type="date" class="form-control">
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-filter me-2"></i>Apply Filters
+                    </button>
+                    <button type="button" class="btn btn-success ms-2" onclick="exportReport()">
+                        <i class="fas fa-download me-2"></i>Export Report
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Reservation Trends</h5>
+                    <div class="chart-container">
+                        <canvas id="reservationChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Revenue Overview</h5>
+                    <div class="chart-container">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Room Type Distribution</h5>
+                    <div class="chart-container">
+                        <canvas id="roomTypeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Guest Satisfaction</h5>
+                    <div class="chart-container">
+                        <canvas id="satisfactionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Initialize charts
+        function initializeCharts() {
+            // Reservation Trends Chart
+            const reservationCtx = document.getElementById('reservationChart').getContext('2d');
+            new Chart(reservationCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Reservations',
+                        data: [65, 59, 80, 81, 56, 55],
+                        borderColor: '#3498db',
+                        tension: 0.1
+                    }]
+                }
+            });
+
+            // Revenue Chart
+            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+            new Chart(revenueCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Revenue',
+                        data: [12000, 19000, 15000, 25000, 22000, 30000],
+                        backgroundColor: '#3498db'
+                    }]
+                }
+            });
+
+            // Room Type Distribution Chart
+            const roomTypeCtx = document.getElementById('roomTypeChart').getContext('2d');
+            new Chart(roomTypeCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Standard', 'Deluxe', 'Suite'],
+                    datasets: [{
+                        data: [40, 35, 25],
+                        backgroundColor: ['#3498db', '#2ecc71', '#e74c3c']
+                    }]
+                }
+            });
+
+            // Guest Satisfaction Chart
+            const satisfactionCtx = document.getElementById('satisfactionChart').getContext('2d');
+            new Chart(satisfactionCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Cleanliness', 'Service', 'Comfort', 'Value', 'Location'],
+                    datasets: [{
+                        label: 'Satisfaction Score',
+                        data: [4.5, 4.8, 4.6, 4.3, 4.7],
+                        backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                        borderColor: '#3498db',
+                        pointBackgroundColor: '#3498db'
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 5
+                        }
+                    }
+                }
+            });
+        }
+
+        // Export report
+        function exportReport() {
+            // Implementation for exporting report
+        }
+
+        // Initialize charts when the page loads
+        document.addEventListener('DOMContentLoaded', initializeCharts);
+    </script>
+} 

@@ -1,112 +1,124 @@
 @{
-    Layout = null;
     ViewData["Title"] = "User Account Management";
+    Layout = "_AdminLayout";
 }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"]</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-        }
-        .header {
-            background-color: #8B1C1C;
-            color: white;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-        .back-button {
-            color: white;
-            text-decoration: none;
-        }
-        .card {
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-    </style>
-</head>
-<body>
-    <div class="header">
-          <a href="@Url.Action("AdminDash", "Home")" class="back-button d-flex align-items-center gap-2 text-decoration-none">
-            <i class="fas fa-arrow-left fa-lg"></i>
-            <span class="fw-semibold">Back to Dashboard</span>
-        </a>
-        <h2 class="text-center">User Account Management</h2>
-    </div>
-
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4>User Accounts</h4>
-                        <button class="btn btn-danger float-end" data-bs-toggle="modal" data-bs-target="#addUserModal">
-                            <i class="fas fa-plus"></i> Add New User
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title mb-4">User Account Management</h2>
+            
+            <!-- User Management Controls -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search users...">
+                        <button class="btn btn-primary" type="button">
+                            <i class="fas fa-search"></i> Search
                         </button>
                     </div>
-                    <div class="card-body">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Username</th>
-                                    <th>Role</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- User data will be populated here -->
-                            </tbody>
-                        </table>
+                </div>
+                <div class="col-md-6 text-end">
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                        <i class="fas fa-user-plus"></i> Add New User
+                    </button>
+                </div>
+            </div>
+
+            <!-- Users Table -->
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>John Doe</td>
+                            <td>john@example.com</td>
+                            <td>Admin</td>
+                            <td><span class="badge bg-success">Active</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Jane Smith</td>
+                            <td>jane@example.com</td>
+                            <td>Staff</td>
+                            <td><span class="badge bg-success">Active</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <nav aria-label="Page navigation" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Previous</a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<!-- Add User Modal -->
+<div class="modal fade" id="addUserModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add New User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-control" required>
                     </div>
-                </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Role</label>
+                        <select class="form-select">
+                            <option>Admin</option>
+                            <option>Staff</option>
+                            <option>User</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary">Add User</button>
             </div>
         </div>
     </div>
-
-    <!-- Add User Modal -->
-    <div class="modal fade" id="addUserModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add New User</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label class="form-label">Username</label>
-                            <input type="text" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Role</label>
-                            <select class="form-select" required>
-                                <option value="admin">Admin</option>
-                                <option value="staff">Staff</option>
-                                <option value="guest">Guest</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Password</label>
-                            <input type="password" class="form-control" required>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger">Add User</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-</body>
-</html> 
+</div> 

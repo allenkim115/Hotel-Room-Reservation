@@ -49,8 +49,14 @@ namespace WebApplication1.Controllers
                 LastName = model.LastName,
                 Email = model.Email,
                 Username = model.Username,
-                Password = model.Password, 
-                Role = "Guest"
+                Password = model.Password,
+                Address = model.Address,
+                PhoneNumber = model.PhoneNumber,
+                Role = "Guest",
+                EmailNotifications = true,
+                SmsNotifications = true,
+                PreferredLanguage = "English",
+                ProfileImageUrl = "/images/default-profile.png"
             };
 
             _context.Users.Add(newUser);
@@ -87,7 +93,8 @@ namespace WebApplication1.Controllers
             {
                 new Claim(ClaimTypes.Name, user.Username),
                 new Claim(ClaimTypes.Role, user.Role),
-                new Claim(ClaimTypes.Email, user.Email)
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.PK_USER_ID.ToString())  // Add user ID claim
             };
 
             // Create claimsIdentity
@@ -111,7 +118,7 @@ namespace WebApplication1.Controllers
             if (user.Role == "Guest")
                 return RedirectToAction("Indexlogin", "Home");
             else if (user.Role == "Admin")
-                return RedirectToAction("AdminDash", "Home");
+                return RedirectToAction("AdminDash", "Admin");
             else if (user.Role == "Staff")
                 return RedirectToAction("Dashboard", "Staff");
 
