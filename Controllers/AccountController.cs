@@ -8,17 +8,21 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;  // Add this line
-
+using System.Security.Cryptography;
+using System.Text;
+using Microsoft.Extensions.Logging;
 
 namespace WebApplication1.Controllers
 {
     public class AccountController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<AccountController> _logger;
 
-        public AccountController(ApplicationDbContext context)
+        public AccountController(ApplicationDbContext context, ILogger<AccountController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -49,7 +53,7 @@ namespace WebApplication1.Controllers
                 LastName = model.LastName,
                 Email = model.Email,
                 Username = model.Username,
-                Password = model.Password,
+                Password = HashPassword(model.Password),
                 Address = model.Address,
                 PhoneNumber = model.PhoneNumber,
                 Role = "Guest",
@@ -75,54 +79,77 @@ namespace WebApplication1.Controllers
         {
             if (!ModelState.IsValid)
             {
+                _logger.LogWarning("Model state is invalid");
                 return View(model);
             }
 
-            var user = _context.Users.FirstOrDefault(u => 
-                u.Username == model.Username && 
-                u.Password == model.Password);  // Note: Use proper password hashing in production!
-
-            if (user == null)
+            try
             {
-                ViewData["ErrorMessage"] = "Invalid Username or Password";
+                var hashedPassword = HashPassword(model.Password);
+                _logger.LogInformation($"Attempting login for username: {model.Username}");
+                _logger.LogInformation($"Hashed password: {hashedPassword}");
+                
+                // Check if user exists
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == model.Username);
+                if (user == null)
+                {
+                    _logger.LogWarning($"User not found: {model.Username}");
+                    ViewData["ErrorMessage"] = "Invalid Username or Password";
+                    return View(model);
+                }
+
+                _logger.LogInformation($"Found user with role: {user.Role}");
+                _logger.LogInformation($"Stored password hash: {user.Password}");
+                _logger.LogInformation($"Input password hash: {hashedPassword}");
+                
+                if (user.Password != hashedPassword)
+                {
+                    _logger.LogWarning($"Password mismatch for user: {model.Username}");
+                    ViewData["ErrorMessage"] = "Invalid Username or Password";
+                    return View(model);
+                }
+
+                // Create claims
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(ClaimTypes.Role, user.Role),
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.NameIdentifier, user.PK_USER_ID.ToString())
+                };
+
+                var claimsIdentity = new ClaimsIdentity(
+                    claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                var authProperties = new AuthenticationProperties
+                {
+                    IsPersistent = false,
+                    ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30)
+                };
+
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(claimsIdentity),
+                    authProperties);
+
+                _logger.LogInformation($"Successfully logged in user: {user.Username} with role: {user.Role}");
+
+                // Redirect based on role
+                if (user.Role == "Guest")
+                    return RedirectToAction("Indexlogin", "Home");
+                else if (user.Role == "Admin")
+                    return RedirectToAction("AdminDash", "Admin");
+                else if (user.Role == "Staff")
+                    return RedirectToAction("Dashboard", "Staff");
+
+                return RedirectToAction("Index", "Home");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during login process");
+                ViewData["ErrorMessage"] = "An error occurred during login. Please try again.";
                 return View(model);
             }
-
-            // Create claims
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Role, user.Role),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.NameIdentifier, user.PK_USER_ID.ToString())  // Add user ID claim
-            };
-
-            // Create claimsIdentity
-            var claimsIdentity = new ClaimsIdentity(
-                claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-            // Create AuthenticationProperties
-            var authProperties = new AuthenticationProperties
-            {
-                IsPersistent = false, // Set to true for "remember me" functionality
-                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30)
-            };
-
-            // Sign in the user
-            await HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(claimsIdentity),
-                authProperties);
-
-            // Redirect based on role
-            if (user.Role == "Guest")
-                return RedirectToAction("Indexlogin", "Home");
-            else if (user.Role == "Admin")
-                return RedirectToAction("AdminDash", "Admin");
-            else if (user.Role == "Staff")
-                return RedirectToAction("Dashboard", "Staff");
-
-            return RedirectToAction("Index", "Home");
         }
         
         public async Task<IActionResult> Logout()
@@ -130,6 +157,15 @@ namespace WebApplication1.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Home");
+        }
+
+        private string HashPassword(string password)
+        {
+            using (var sha256 = SHA256.Create())
+            {
+                var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                return BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
+            }
         }
     }
 }

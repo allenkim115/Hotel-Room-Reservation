@@ -43,7 +43,6 @@ namespace WebApplication1.Controllers
             return AuthorizedView();
         }
 
-        [Authorize]
         public IActionResult Services()
         {
             var model = GetBaseViewModel();

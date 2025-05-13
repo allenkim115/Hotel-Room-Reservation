@@ -11,9 +11,9 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #34495e;
-            --accent-color: #3498db;
+            --primary-color: #800000;
+            --secondary-color: #8B0000;
+            --accent-color: #A52A2A;
             --text-color: #2c3e50;
             --light-bg: #f8f9fa;
             --white: #ffffff;
@@ -168,7 +168,7 @@
                             Admin
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                            <li><a class="dropdown-item" href="@Url.Action("Logout", "Account")"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
                         </ul>
                     </div>
                 </div>
@@ -188,25 +188,25 @@
             <li>
                 <a href="/Admin/RoomInventory" class="@(ViewContext.RouteData.Values["Action"].ToString() == "RoomInventory" ? "active" : "")">
                     <i class="fas fa-bed"></i>
-                    Room Inventory
+                    Rooms
                 </a>
             </li>
             <li>
-                <a href="/Admin/Services" class="@(ViewContext.RouteData.Values["Action"].ToString() == "Services" ? "active" : "")">
+                <a href="@Url.Action("Services", "Admin")" class="@(ViewContext.RouteData.Values["Action"].ToString() == "Services" ? "active" : "")">
                     <i class="fas fa-concierge-bell"></i>
                     Services
+                </a>
+            </li>
+            <li>
+                <a href="/Admin/Reservations" class="@(ViewContext.RouteData.Values["Action"].ToString() == "Reservations" ? "active" : "")">
+                    <i class="fas fa-calendar-alt"></i>
+                    Reservations
                 </a>
             </li>
             <li>
                 <a href="/Admin/UserAccountManagement" class="@(ViewContext.RouteData.Values["Action"].ToString() == "UserAccountManagement" ? "active" : "")">
                     <i class="fas fa-users"></i>
                     User Management
-                </a>
-            </li>
-            <li>
-                <a href="/Admin/ReportingAnalytics" class="@(ViewContext.RouteData.Values["Action"].ToString() == "ReportingAnalytics" ? "active" : "")">
-                    <i class="fas fa-chart-bar"></i>
-                    Reports & Analytics
                 </a>
             </li>
         </ul>

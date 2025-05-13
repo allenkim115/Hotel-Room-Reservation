@@ -30,8 +30,14 @@ namespace WebApplication1.Services
                     LastName = "Administrator",
                     Email = "admin@hotelreservation.com",
                     Username = "admin",
-                    Password = "admin123",
-                    Role = "Admin"
+                    Password = HashPassword("admin123"),
+                    Role = "Admin",
+                    PhoneNumber = "1234567890",
+                    Address = "Hotel Management Office",
+                    PreferredLanguage = "English",
+                    EmailNotifications = true,
+                    SmsNotifications = true,
+                    ProfileImageUrl = "/images/default-admin.png"
                 };
 
                 _context.Users.Add(adminUser);

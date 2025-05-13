@@ -1,0 +1,20 @@
+@model WebApplication1.Models.BaseViewModel
+
+@{
+    ViewData["Title"] = "Reservation Details";
+    Layout = "_AdminLayout";
+}
+
+<h2>Reservation Details</h2>
+<table class="table">
+    <tr><th>ID</th><td>@Model.SelectedReservation.Id</td></tr>
+    <tr><th>Guest</th><td>@Model.SelectedReservation.User.FirstName @Model.SelectedReservation.User.LastName</td></tr>
+    <tr><th>Room Type</th><td>@Model.SelectedReservation.RoomType</td></tr>
+    <tr><th>Status</th><td>@Model.SelectedReservation.Status</td></tr>
+    <tr><th>Check-In</th><td>@Model.SelectedReservation.CheckInDate.ToString("MM/dd/yyyy")</td></tr>
+    <tr><th>Check-Out</th><td>@Model.SelectedReservation.CheckOutDate.ToString("MM/dd/yyyy")</td></tr>
+    <tr><th>Guests</th><td>@Model.SelectedReservation.NumberOfGuests</td></tr>
+    <tr><th>Total Amount</th><td>@Model.SelectedReservation.TotalAmount.ToString("C")</td></tr>
+    <tr><th>Special Requests</th><td>@Model.SelectedReservation.SpecialRequests</td></tr>
+</table>
+<a href="@Url.Action("Reservations", "Admin")" class="btn btn-secondary">Back to Reservations</a> 

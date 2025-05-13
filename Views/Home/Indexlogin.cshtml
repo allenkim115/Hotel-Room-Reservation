@@ -10,14 +10,18 @@
     <div class="row align-items-center">
         <div class="col-md-3 text-center">
             <div class="user-avatar-large enhanced-avatar-maroon p-0" style="background: none; box-shadow: none;">
-                @if (!string.IsNullOrEmpty(Model.Profile.ProfileImageUrl))
-                {
-                    <img src="@Model.Profile.ProfileImageUrl" alt="Profile Picture" class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover; border: 5px solid #fff; box-shadow: 0 0 0 6px rgba(255,255,255,0.15), 0 8px 32px rgba(0,0,0,0.10); background: none;">
+                @{
+                    var defaultImagePath = Url.Content("~/images/default_pic.png");
+                    var profileImagePath = !string.IsNullOrEmpty(Model.Profile.ProfileImageUrl) 
+                        ? Model.Profile.ProfileImageUrl 
+                        : defaultImagePath;
                 }
-                else
-                {
-                    <i class="fas fa-user" style="font-size: 5rem; color: #fff;"></i>
-                }
+                <img src="@profileImagePath" 
+                     alt="Profile Picture" 
+                     class="rounded-circle" 
+                     style="width: 150px; height: 150px; object-fit: cover; border: 5px solid #fff; box-shadow: 0 0 0 6px rgba(255,255,255,0.15), 0 8px 32px rgba(0,0,0,0.10); background: none;"
+                     onerror="this.onerror=null; this.src='@defaultImagePath'; console.log('Image failed to load, trying default');"
+                     onload="console.log('Image loaded successfully');">
             </div>
         </div>
         <div class="col-md-9 d-flex flex-column justify-content-center">

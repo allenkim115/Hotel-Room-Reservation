@@ -18,10 +18,6 @@
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <h5 class="mb-0">
                                 @reservation.RoomType
-                                @if (reservation.Status == "Service")
-                                {
-                                    <span class="badge bg-info ms-2">Service</span>
-                                }
                             </h5>
                             <span class="reservation-status status-@reservation.Status.ToLower()">@reservation.Status</span>
                         </div>
@@ -48,16 +44,11 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <p><strong>Room:</strong> @reservation.RoomType
-                                    @if (reservation.Status == "Service")
-                                    {
-                                        <span class="badge bg-info ms-2">Service</span>
-                                    }
-                                </p>
+                                <p><strong>Room:</strong> @reservation.RoomType</p>
                                 <p><strong>Dates:</strong> @reservation.CheckInDate.ToString("MMM dd") - @reservation.CheckOutDate.ToString("MMM dd, yyyy")</p>
                                 <p><strong>Guests:</strong> @reservation.NumberOfGuests @(reservation.NumberOfGuests == 1 ? "Adult" : "Adults")</p>
                                 <p><strong>Total:</strong> $@reservation.TotalAmount.ToString("N2")</p>
-                                <p><strong>Status:</strong> <span class="badge bg-@(reservation.Status == "Confirmed" ? "success" : "warning")">@reservation.Status</span></p>
+                                <p><strong>Status:</strong> <span class="badge bg-@(reservation.Status == "Approved" ? "success" : reservation.Status == "Pending" ? "warning" : reservation.Status == "Rejected" ? "danger" : "info")">@reservation.Status</span></p>
                                 @if (!string.IsNullOrEmpty(reservation.SpecialRequests))
                                 {
                                     <p><strong>Special Requests:</strong> @reservation.SpecialRequests</p>
@@ -127,10 +118,6 @@
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <h5 class="mb-0">
                                 @reservation.RoomType
-                                @if (reservation.Status == "Service")
-                                {
-                                    <span class="badge bg-info ms-2">Service</span>
-                                }
                             </h5>
                             <span class="reservation-status status-completed">Completed</span>
                         </div>
@@ -154,12 +141,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <p><strong>Room:</strong> @reservation.RoomType
-                                    @if (reservation.Status == "Service")
-                                    {
-                                        <span class="badge bg-info ms-2">Service</span>
-                                    }
-                                </p>
+                                <p><strong>Room:</strong> @reservation.RoomType</p>
                                 <p><strong>Dates:</strong> @reservation.CheckInDate.ToString("MMM dd") - @reservation.CheckOutDate.ToString("MMM dd, yyyy")</p>
                                 <p><strong>Guests:</strong> @reservation.NumberOfGuests @(reservation.NumberOfGuests == 1 ? "Adult" : "Adults")</p>
                                 <p><strong>Total:</strong> $@reservation.TotalAmount.ToString("N2")</p>
@@ -377,7 +359,7 @@
             font-weight: 500;
         }
 
-        .status-confirmed {
+        .status-confirmed, .status-approved {
             background-color: #d4edda;
             color: #155724;
         }
@@ -390,6 +372,16 @@
         .status-completed {
             background-color: #e2e3e5;
             color: #383d41;
+        }
+
+        .status-rejected {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-cancelled {
+            background-color: #f8d7da;
+            color: #721c24;
         }
 
         .reservation-status {

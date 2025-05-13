@@ -106,5 +106,46 @@ namespace WebApplication1.Controllers
 
             return Json(new { success = true });
         }
+
+        [HttpPost]
+        public IActionResult Book(string roomType, DateTime checkInDate, DateTime checkOutDate, int numberOfGuests)
+        {
+            // Get the current user's ID
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            if (userId == 0)
+            {
+                return Json(new { success = false, message = "User not authenticated." });
+            }
+
+            // Find the room type by name
+            var roomTypeEntity = _context.RoomTypes.FirstOrDefault(r => r.Name == roomType);
+            if (roomTypeEntity == null)
+            {
+                return Json(new { success = false, message = "Invalid room type." });
+            }
+
+            // Calculate total price
+            var nights = (checkOutDate - checkInDate).Days;
+            if (nights < 1) nights = 1;
+            var total = nights * roomTypeEntity.PricePerNight;
+
+            // Save reservation
+            var reservation = new Reservation
+            {
+                RoomTypeId = roomTypeEntity.Id,
+                RoomType = roomTypeEntity.Name,
+                Status = "Pending",
+                CheckInDate = checkInDate.Kind == DateTimeKind.Utc ? checkInDate : DateTime.SpecifyKind(checkInDate, DateTimeKind.Utc),
+                CheckOutDate = checkOutDate.Kind == DateTimeKind.Utc ? checkOutDate : DateTime.SpecifyKind(checkOutDate, DateTimeKind.Utc),
+                NumberOfGuests = numberOfGuests,
+                TotalAmount = total,
+                SpecialRequests = "",
+                UserId = userId
+            };
+            _context.Reservations.Add(reservation);
+            _context.SaveChanges();
+
+            return Json(new { success = true });
+        }
     }
 } 

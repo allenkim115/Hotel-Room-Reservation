@@ -13,7 +13,7 @@ namespace WebApplication1.Models
         public string OperatingHours { get; set; }
         public string Location { get; set; }
         [Required]
-        public decimal PricePerPerson { get; set; }
+        public int PricePerPerson { get; set; }
         public int? MaxGuests { get; set; }
     }
 } 

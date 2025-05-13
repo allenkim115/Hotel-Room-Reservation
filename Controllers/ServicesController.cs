@@ -37,7 +37,7 @@ namespace WebApplication1.Controllers
             {
                 RoomTypeId = service.Id, // Use ServiceId for RoomTypeId
                 RoomType = service.Name, // Use Service Name for RoomType
-                Status = "Service",
+                Status = "Pending",
                 CheckInDate = model.BookingDate.Kind == System.DateTimeKind.Utc ? model.BookingDate : System.DateTime.SpecifyKind(model.BookingDate, System.DateTimeKind.Utc),
                 CheckOutDate = model.BookingDate.Kind == System.DateTimeKind.Utc ? model.BookingDate : System.DateTime.SpecifyKind(model.BookingDate, System.DateTimeKind.Utc),
                 NumberOfGuests = model.NumberOfGuests,

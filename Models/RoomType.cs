@@ -9,7 +9,7 @@ namespace WebApplication1.Models
         public string Name { get; set; }
         public string ImageUrl { get; set; }
         [Required]
-        public decimal PricePerNight { get; set; }
+        public int PricePerNight { get; set; }
         public string BedType { get; set; }
         public int MaxOccupancy { get; set; }
         public int Size { get; set; }

@@ -12,14 +12,18 @@
             <div class="profile-card">
                 <div class="profile-header">
                     <div class="profile-image">
-                        @if (!string.IsNullOrEmpty(Model.Profile.ProfileImageUrl))
-                        {
-                            <img src="@Model.Profile.ProfileImageUrl" alt="Profile Picture" class="rounded-circle" id="profilePicture">
+                        @{
+                            var defaultImagePath = Url.Content("~/images/default_pic.png");
+                            var profileImagePath = !string.IsNullOrEmpty(Model.Profile.ProfileImageUrl) 
+                                ? Model.Profile.ProfileImageUrl 
+                                : defaultImagePath;
                         }
-                        else
-                        {
-                            <img src="~/images/profile.png" alt="Profile Picture" class="rounded-circle" id="profilePicture">
-                        }
+                        <img src="@profileImagePath" 
+                             alt="Profile Picture" 
+                             class="rounded-circle" 
+                             id="profilePicture"
+                             onerror="this.onerror=null; this.src='@defaultImagePath'; console.log('Image failed to load, trying default');"
+                             onload="console.log('Image loaded successfully');">
                         <button class="btn btn-edit-image" onclick="document.getElementById('profileImageInput').click()">
                             <i class="fas fa-camera"></i>
                         </button>

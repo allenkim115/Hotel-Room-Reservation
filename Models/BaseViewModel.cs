@@ -16,9 +16,13 @@ namespace WebApplication1.Models
         public List<RoomTypeModel> RoomTypes { get; set; } = new List<RoomTypeModel>();
         public List<Reservation> ActiveReservations { get; set; } = new List<Reservation>();
         public List<Reservation> PastReservations { get; set; } = new List<Reservation>();
+        public List<Room> Rooms { get; set; } = new List<Room>();
+        public List<User> Users { get; set; } = new List<User>();
 
         // Add missing property for views
         public List<string> SpecialOffers { get; set; } = new List<string>();
+
+        public Reservation SelectedReservation { get; set; }
 
         public BaseViewModel()
         {
@@ -48,7 +52,7 @@ namespace WebApplication1.Models
         public string ImageUrl { get; set; }
         public string OperatingHours { get; set; }
         public string Location { get; set; }
-        public decimal PricePerPerson { get; set; }
+        public int PricePerPerson { get; set; }
         public int? MaxGuests { get; set; }
 
         // Add missing properties for views
@@ -66,7 +70,7 @@ namespace WebApplication1.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string ImageUrl { get; set; }
-        public decimal PricePerNight { get; set; }
+        public int PricePerNight { get; set; }
         public string BedType { get; set; }
         public int MaxOccupancy { get; set; }
         public int Size { get; set; }

@@ -1,0 +1,230 @@
+@model WebApplication1.Models.BaseViewModel
+
+@{
+    ViewData["Title"] = "Reservation Management";
+    Layout = "_AdminLayout";
+
+    string GetStatusBadgeColor(string status)
+    {
+        return status.ToLower() switch
+        {
+            "pending" => "warning",
+            "approved" => "success",
+            "rejected" => "danger",
+            "completed" => "info",
+            _ => "secondary"
+        };
+    }
+}
+
+<div class="container-fluid">
+    @Html.AntiForgeryToken()
+    <!-- Filters Section -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Status</label>
+                    <select class="form-select" id="statusFilter">
+                        <option value="all">All Reservations</option>
+                        <option value="pending">Pending</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Date Range</label>
+                    <select class="form-select" id="dateRangeFilter">
+                        <option value="today">Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                        <option value="custom">Custom Range</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Start Date</label>
+                    <input type="date" class="form-control" id="startDate">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">End Date</label>
+                    <input type="date" class="form-control" id="endDate">
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-filter me-2"></i>Apply Filters
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Reservations Table -->
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title mb-4">Reservation List</h5>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Reservation ID</th>
+                            <th>Guest Name</th>
+                            <th>Reservation Type</th>
+                            <th>Check-in</th>
+                            <th>Check-out</th>
+                            <th>Status</th>
+                            <th>Total Amount</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var reservation in Model.ActiveReservations)
+                        {
+                            <tr>
+                                <td>@reservation.Id</td>
+                                <td>
+                                    <img src="@(string.IsNullOrEmpty(reservation.User.ProfileImageUrl) ? "/images/default_pic.png" : reservation.User.ProfileImageUrl)" alt="Profile Picture" style="width:32px;height:32px;border-radius:50%;object-fit:cover;margin-right:8px;vertical-align:middle;">
+                                    @reservation.User.FirstName @reservation.User.LastName
+                                </td>
+                                <td>@reservation.RoomType</td>
+                                <td>@reservation.CheckInDate.ToString("MM/dd/yyyy")</td>
+                                <td>@reservation.CheckOutDate.ToString("MM/dd/yyyy")</td>
+                                <td>
+                                    <span class="badge bg-@GetStatusBadgeColor(reservation.Status)">
+                                        @reservation.Status
+                                    </span>
+                                </td>
+                                <td>@reservation.TotalAmount.ToString("C")</td>
+                                <td>
+                                    <div class="btn-group">
+                                        @if (reservation.Status == "Pending")
+                                        {
+                                            <button class="btn btn-success btn-sm" onclick="approveReservation(@reservation.Id)">
+                                                <i class="fas fa-check"></i> Approve
+                                            </button>
+                                            <button class="btn btn-danger btn-sm" onclick="rejectReservation(@reservation.Id)">
+                                                <i class="fas fa-times"></i> Reject
+                                            </button>
+                                        }
+                                        @if (reservation.Status == "Approved")
+                                        {
+                                            <button class="btn btn-primary btn-sm" onclick="markAsCompleted(@reservation.Id)">
+                                                <i class="fas fa-flag-checkered"></i> Mark Completed
+                                            </button>
+                                        }
+                                        <button class="btn btn-info btn-sm" onclick="viewDetails(@reservation.Id)">
+                                            <i class="fas fa-eye"></i> View
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function approveReservation(id) {
+            if (confirm('Are you sure you want to approve this reservation?')) {
+                const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+                fetch(`/Admin/ApproveReservation/${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': token
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert(data.message || 'Failed to approve reservation');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while approving the reservation');
+                });
+            }
+        }
+
+        function rejectReservation(id) {
+            if (confirm('Are you sure you want to reject this reservation?')) {
+                const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+                fetch(`/Admin/RejectReservation/${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': token
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert(data.message || 'Failed to reject reservation');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while rejecting the reservation');
+                });
+            }
+        }
+
+        function markAsCompleted(id) {
+            if (confirm('Are you sure you want to mark this reservation as completed?')) {
+                const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+                fetch(`/Admin/CompleteReservation/${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': token
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert(data.message || 'Failed to mark reservation as completed');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while marking the reservation as completed');
+                });
+            }
+        }
+
+        function viewDetails(id) {
+            window.location.href = `/Admin/ReservationDetails/${id}`;
+        }
+
+        function exportReservations() {
+            // Implementation for exporting reservations data
+            alert('Export functionality will be implemented here');
+        }
+    </script>
+} 

@@ -74,5 +74,38 @@ namespace WebApplication1.Controllers
 
             return View(baseViewModel);
         }
+
+        protected IActionResult AuthorizedView(string viewName, object model = null)
+        {
+            var username = User.Identity?.Name;
+            if (string.IsNullOrEmpty(username))
+                return RedirectToAction("Login", "Account");
+
+            var user = _context.Users.FirstOrDefault(u => u.Username == username);
+            if (user == null)
+                return RedirectToAction("Login", "Account");
+
+            var baseViewModel = BaseViewModel.FromUser(user);
+            
+            if (model != null)
+            {
+                // If the model is already a BaseViewModel, use it
+                if (model is BaseViewModel baseModel)
+                {
+                    baseModel.Profile = baseViewModel.Profile;
+                    return View(viewName, baseModel);
+                }
+                
+                // Otherwise, create a new view model with the model's properties
+                var viewModel = new BaseViewModel
+                {
+                    Profile = baseViewModel.Profile
+                };
+                
+                return View(viewName, viewModel);
+            }
+
+            return View(viewName, baseViewModel);
+        }
     }
 } 
